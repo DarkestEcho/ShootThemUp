@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "STUBaseCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
 {
@@ -13,12 +15,18 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
 
 public:
 	// Sets default values for this character's properties
-	ASTUBaseCharacter();
+	ASTUBaseCharacter(const FObjectInitializer& ObjInit);
 
 protected:
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+    USpringArmComponent* SpringArmComponent;
+    
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+    UCameraComponent* CameraComponent;
+    
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+    
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -26,4 +34,16 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+    UFUNCTION(BlueprintCallable, Category= "Movement")
+    bool IsRunning() const;
+
+private:
+    bool bRunning = false;
+    bool bMovingForward = false;
+    
+    void MoveForward(float Amount);
+    void MoveRight(float Amount);
+
+    void StartRunning();
+    void StopRunning();
 };
