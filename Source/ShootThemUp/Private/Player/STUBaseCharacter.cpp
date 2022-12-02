@@ -3,7 +3,7 @@
 
 #include "Player/STUBaseCharacter.h"
 
-#include "STUBaseWeapon.h"
+#include "STUWeaponComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/STUCharacterMovementComponent.h"
 #include "Components/STUHealthComponent.h"
@@ -33,6 +33,8 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
     HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
     HealthTextComponent->SetupAttachment(GetRootComponent());
     HealthTextComponent->SetOwnerNoSee(true);
+
+    WeaponComponent = CreateDefaultSubobject<USTUWeaponComponent>("WeaponComponent");
 }
 
 // Called when the game starts or when spawned
@@ -43,6 +45,7 @@ void ASTUBaseCharacter::BeginPlay()
     check(GetWorld());
     check(HealthComponent);
     check(HealthTextComponent);
+    check(WeaponComponent);
     check(GetCharacterMovement());
 
     OnHealthChanged(HealthComponent->GetHealth());
@@ -50,8 +53,6 @@ void ASTUBaseCharacter::BeginPlay()
     HealthComponent->OnHealthChanged.AddUObject(this, &ASTUBaseCharacter::OnHealthChanged);
 
     LandedDelegate.AddDynamic(this, &ASTUBaseCharacter::OnGroundLanded);
-
-    SpawnWeapon();
 }
 
 // Called every frame
@@ -74,6 +75,8 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUBaseCharacter::Jump);
     PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUBaseCharacter::StartRunning);
     PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUBaseCharacter::StopRunning);
+    PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTUWeaponComponent::Fire);
+    
 }
 
 bool ASTUBaseCharacter::IsRunning() const
@@ -125,15 +128,6 @@ void ASTUBaseCharacter::StartRunning()
 void ASTUBaseCharacter::StopRunning()
 {
     bRunning = false;
-}
-
-void ASTUBaseCharacter::SpawnWeapon()
-{
-    if(ASTUBaseWeapon* Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponClass))
-    {
-        const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
-        Weapon->AttachToComponent(GetMesh(), AttachmentRules, "WeaponSocket");
-    }
 }
 
 void ASTUBaseCharacter::OnDeath()

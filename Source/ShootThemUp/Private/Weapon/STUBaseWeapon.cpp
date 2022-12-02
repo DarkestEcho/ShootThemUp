@@ -3,6 +3,7 @@
 
 #include "Weapon/STUBaseWeapon.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All);
 
 ASTUBaseWeapon::ASTUBaseWeapon()
 {
@@ -12,8 +13,12 @@ ASTUBaseWeapon::ASTUBaseWeapon()
     SetRootComponent(WeaponMesh);
 }
 
+void ASTUBaseWeapon::Fire()
+{
+    UE_LOG(LogBaseWeapon, Display, TEXT("Fire!"));    
+}
+
 void ASTUBaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
