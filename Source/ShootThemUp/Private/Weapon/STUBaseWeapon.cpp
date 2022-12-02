@@ -3,6 +3,7 @@
 
 #include "Weapon/STUBaseWeapon.h"
 
+#include "Engine/DamageEvents.h"
 #include "GameFramework/Character.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All);
@@ -28,7 +29,7 @@ void ASTUBaseWeapon::BeginPlay()
     check(WeaponMesh);
 }
 
-void ASTUBaseWeapon::MakeShot() const
+void ASTUBaseWeapon::MakeShot()
 {
     FVector TraceStart;
     FVector TraceEnd;
@@ -47,6 +48,7 @@ void ASTUBaseWeapon::MakeShot() const
     
     if (HitResult.bBlockingHit && AngleBetween <= MaxDeflectionAngle)
     {
+        MakeDamage(HitResult);
         DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Red, false, 3.0f, 0, 3.0f);
         DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 5.0f);
     }
@@ -113,4 +115,16 @@ void ASTUBaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, c
 float ASTUBaseWeapon::GetAngleBetweenMuzzleAndHit(const FVector& HitPoint) const
 {
     return FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(GetMuzzleWorldRotation().Vector(), (HitPoint - GetMuzzleWorldLocation()).GetSafeNormal())));
+}
+
+void ASTUBaseWeapon::MakeDamage(const FHitResult& HitResult)
+{
+    AActor* DamagedActor = HitResult.GetActor();
+
+    if(!DamagedActor)
+    {
+        return;
+    }
+
+    DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
 }
