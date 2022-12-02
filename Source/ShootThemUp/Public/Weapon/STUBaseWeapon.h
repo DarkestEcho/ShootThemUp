@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "STUBaseWeapon.generated.h"
 
+
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseWeapon : public AActor
 {
@@ -20,5 +21,28 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     USkeletalMeshComponent* WeaponMesh;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    FName MuzzleSocketName = "MuzzleSocket";
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    float TraceMaxDistance = 1500.0f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    float MaxDeflectionAngle = 86.0f;
+    
     virtual void BeginPlay() override;
+
+    void MakeShot() const;
+
+    APlayerController* GetPlayerController() const;
+
+    bool GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const;
+    bool GetTracedData(FVector& TraceStart, FVector& TraceEnd) const;
+    
+    FVector GetMuzzleWorldLocation() const;
+    FRotator GetMuzzleWorldRotation() const;
+
+    void MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd) const;
+
+    float GetAngleBetweenMuzzleAndHit(const FVector& HitPoint) const;
 };
