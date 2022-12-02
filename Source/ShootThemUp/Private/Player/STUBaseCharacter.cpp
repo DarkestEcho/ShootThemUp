@@ -3,6 +3,7 @@
 
 #include "Player/STUBaseCharacter.h"
 
+#include "STUBaseWeapon.h"
 #include "Camera/CameraComponent.h"
 #include "Components/STUCharacterMovementComponent.h"
 #include "Components/STUHealthComponent.h"
@@ -22,6 +23,7 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
     SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
     SpringArmComponent->SetupAttachment(GetRootComponent());
     SpringArmComponent->bUsePawnControlRotation = true;
+    SpringArmComponent->SocketOffset = FVector(0.0f, 50.0f, 80.0f);
 
     CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     CameraComponent->SetupAttachment(SpringArmComponent);
@@ -30,6 +32,7 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
 
     HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
     HealthTextComponent->SetupAttachment(GetRootComponent());
+    HealthTextComponent->SetOwnerNoSee(true);
 }
 
 // Called when the game starts or when spawned
@@ -37,6 +40,7 @@ void ASTUBaseCharacter::BeginPlay()
 {
     Super::BeginPlay();
 
+    check(GetWorld());
     check(HealthComponent);
     check(HealthTextComponent);
     check(GetCharacterMovement());
@@ -46,6 +50,8 @@ void ASTUBaseCharacter::BeginPlay()
     HealthComponent->OnHealthChanged.AddUObject(this, &ASTUBaseCharacter::OnHealthChanged);
 
     LandedDelegate.AddDynamic(this, &ASTUBaseCharacter::OnGroundLanded);
+
+    SpawnWeapon();
 }
 
 // Called every frame
@@ -119,6 +125,15 @@ void ASTUBaseCharacter::StartRunning()
 void ASTUBaseCharacter::StopRunning()
 {
     bRunning = false;
+}
+
+void ASTUBaseCharacter::SpawnWeapon()
+{
+    if(ASTUBaseWeapon* Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponClass))
+    {
+        const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
+        Weapon->AttachToComponent(GetMesh(), AttachmentRules, "WeaponSocket");
+    }
 }
 
 void ASTUBaseCharacter::OnDeath()
