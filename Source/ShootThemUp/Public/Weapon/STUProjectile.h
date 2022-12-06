@@ -16,7 +16,7 @@ public:
 	ASTUProjectile();
 
 protected:
-    UPROPERTY(VisibleDefaultsOnly, Category="Weapon")
+    UPROPERTY(VisibleDefaultsOnly)
     USphereComponent* CollisionComponent;
     
 	virtual void BeginPlay() override;
