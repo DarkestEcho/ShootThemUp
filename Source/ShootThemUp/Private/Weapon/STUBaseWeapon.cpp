@@ -16,12 +16,24 @@ ASTUBaseWeapon::ASTUBaseWeapon()
     SetRootComponent(WeaponMesh);
 }
 
+void ASTUBaseWeapon::StartFire()
+{
+}
+
+void ASTUBaseWeapon::StopFire()
+{
+}
+
 void ASTUBaseWeapon::BeginPlay()
 {
     Super::BeginPlay();
 
     check(GetWorld());
     check(WeaponMesh);
+}
+
+void ASTUBaseWeapon::MakeShot()
+{
 }
 
 APlayerController* ASTUBaseWeapon::GetPlayerController() const

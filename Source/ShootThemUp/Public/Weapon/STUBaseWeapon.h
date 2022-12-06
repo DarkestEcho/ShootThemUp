@@ -15,8 +15,8 @@ class SHOOTTHEMUP_API ASTUBaseWeapon : public AActor
 public:
     ASTUBaseWeapon();
 
-    virtual void StartFire() PURE_VIRTUAL(&ASTUBaseWeapon::StartFire);
-    virtual void StopFire() PURE_VIRTUAL(&ASTUBaseWeapon::StopFire);
+    virtual void StartFire();
+    virtual void StopFire();
 
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -36,7 +36,7 @@ protected:
     
     virtual void BeginPlay() override;
 
-    virtual void MakeShot() PURE_VIRTUAL(&ASTUBaseWeapon::MakeShot);
+    virtual void MakeShot();
     virtual bool GetTracedData(FVector& TraceStart, FVector& TraceEnd) const;
 
     APlayerController* GetPlayerController() const;
