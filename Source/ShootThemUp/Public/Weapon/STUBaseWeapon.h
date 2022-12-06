@@ -15,8 +15,8 @@ class SHOOTTHEMUP_API ASTUBaseWeapon : public AActor
 public:
     ASTUBaseWeapon();
 
-    virtual void StartFire();
-    virtual void StopFire();
+    virtual void StartFire() PURE_VIRTUAL(&ASTUBaseWeapon::StartFire);
+    virtual void StopFire() PURE_VIRTUAL(&ASTUBaseWeapon::StopFire);
 
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -34,20 +34,14 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     float DamageAmount = 10.0f;
     
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    float TimeBetweenShots = 0.1f;
-    
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    float BulletSpread = 1.5f;
-    
     virtual void BeginPlay() override;
 
-    void MakeShot();
+    virtual void MakeShot() PURE_VIRTUAL(&ASTUBaseWeapon::MakeShot);
+    virtual bool GetTracedData(FVector& TraceStart, FVector& TraceEnd) const;
 
     APlayerController* GetPlayerController() const;
 
     bool GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const;
-    bool GetTracedData(FVector& TraceStart, FVector& TraceEnd) const;
     
     FVector GetMuzzleWorldLocation() const;
     FRotator GetMuzzleWorldRotation() const;
@@ -57,7 +51,4 @@ protected:
     float GetAngleBetweenMuzzleAndHit(const FVector& HitPoint) const;
 
     void MakeDamage(const FHitResult& HitResult);
-private:
-    FTimerHandle ShotTimerHandle;
-    
 };
