@@ -95,15 +95,3 @@ float ASTUBaseWeapon::GetAngleBetweenMuzzleAndHit(const FVector& HitPoint) const
     return FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(GetMuzzleWorldRotation().Vector(),
         (HitPoint - GetMuzzleWorldLocation()).GetSafeNormal())));
 }
-
-void ASTUBaseWeapon::MakeDamage(const FHitResult& HitResult)
-{
-    AActor* DamagedActor = HitResult.GetActor();
-
-    if (!DamagedActor)
-    {
-        return;
-    }
-
-    DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
-}

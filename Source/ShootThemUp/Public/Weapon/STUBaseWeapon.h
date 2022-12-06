@@ -30,9 +30,6 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     float MaxDeflectionAngle = 86.0f;
-
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    float DamageAmount = 10.0f;
     
     virtual void BeginPlay() override;
 
@@ -49,6 +46,4 @@ protected:
     void MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd) const;
 
     float GetAngleBetweenMuzzleAndHit(const FVector& HitPoint) const;
-
-    void MakeDamage(const FHitResult& HitResult);
 };

@@ -3,6 +3,8 @@
 
 #include "Weapon/STURifleWeapon.h"
 
+#include "Engine/DamageEvents.h"
+
 DEFINE_LOG_CATEGORY_STATIC(LogRifleWeapon, All, All);
 
 void ASTURifleWeapon::StartFire()
@@ -59,4 +61,16 @@ bool ASTURifleWeapon::GetTracedData(FVector& TraceStart, FVector& TraceEnd) cons
     TraceEnd = TraceStart + ShootDirection * TraceMaxDistance;
 
     return true;
+}
+
+void ASTURifleWeapon::MakeDamage(const FHitResult& HitResult)
+{
+    AActor* DamagedActor = HitResult.GetActor();
+
+    if (!DamagedActor)
+    {
+        return;
+    }
+
+    DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
 }
