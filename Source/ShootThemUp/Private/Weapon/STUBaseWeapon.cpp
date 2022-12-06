@@ -16,9 +16,15 @@ ASTUBaseWeapon::ASTUBaseWeapon()
     SetRootComponent(WeaponMesh);
 }
 
-void ASTUBaseWeapon::Fire()
+void ASTUBaseWeapon::StartFire()
 {
     MakeShot();
+    GetWorld()->GetTimerManager().SetTimer(ShotTimerHandle, this, &ASTUBaseWeapon::MakeShot, TimeBetweenShots, true);
+}
+
+void ASTUBaseWeapon::StopFire()
+{
+    GetWorld()->GetTimerManager().ClearTimer(ShotTimerHandle);
 }
 
 void ASTUBaseWeapon::BeginPlay()
@@ -34,18 +40,18 @@ void ASTUBaseWeapon::MakeShot()
     FVector TraceStart;
     FVector TraceEnd;
 
-    if(!GetTracedData(TraceStart, TraceEnd))
+    if (!GetTracedData(TraceStart, TraceEnd))
     {
         return;
     }
-        
+
     FHitResult HitResult;
     MakeHit(HitResult, TraceStart, TraceEnd);
 
     const float AngleBetween = GetAngleBetweenMuzzleAndHit(HitResult.ImpactPoint);
-    
+
     UE_LOG(LogBaseWeapon, Display, TEXT("%f"), AngleBetween);
-    
+
     if (HitResult.bBlockingHit && AngleBetween <= MaxDeflectionAngle)
     {
         MakeDamage(HitResult);
@@ -61,14 +67,14 @@ void ASTUBaseWeapon::MakeShot()
 APlayerController* ASTUBaseWeapon::GetPlayerController() const
 {
     const ACharacter* Player = Cast<ACharacter>(GetOwner());
-    return Player? Player->GetController<APlayerController>() : nullptr;
+    return Player ? Player->GetController<APlayerController>() : nullptr;
 }
 
 bool ASTUBaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const
 {
     const APlayerController* Controller = GetPlayerController();
 
-    if(!Controller)
+    if (!Controller)
     {
         return false;
     }
@@ -82,13 +88,14 @@ bool ASTUBaseWeapon::GetTracedData(FVector& TraceStart, FVector& TraceEnd) const
     FVector ViewLocation;
     FRotator ViewRotation;
 
-    if(!GetPlayerViewPoint(ViewLocation, ViewRotation))
+    if (!GetPlayerViewPoint(ViewLocation, ViewRotation))
     {
         return false;
     }
-    
-    TraceStart = ViewLocation;              
-    const FVector ShootDirection = ViewRotation.Vector();
+
+    TraceStart = ViewLocation;
+    const float HalfRad = FMath::DegreesToRadians(BulletSpread);
+    const FVector ShootDirection = FMath::VRandCone(ViewRotation.Vector(), HalfRad);
     TraceEnd = TraceStart + ShootDirection * TraceMaxDistance;
 
     return true;
@@ -108,20 +115,21 @@ void ASTUBaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, c
 {
     FCollisionQueryParams CollisionParams;
     CollisionParams.AddIgnoredActor(GetOwner());
-    
+
     GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionParams);
 }
 
 float ASTUBaseWeapon::GetAngleBetweenMuzzleAndHit(const FVector& HitPoint) const
 {
-    return FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(GetMuzzleWorldRotation().Vector(), (HitPoint - GetMuzzleWorldLocation()).GetSafeNormal())));
+    return FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(GetMuzzleWorldRotation().Vector(),
+        (HitPoint - GetMuzzleWorldLocation()).GetSafeNormal())));
 }
 
 void ASTUBaseWeapon::MakeDamage(const FHitResult& HitResult)
 {
     AActor* DamagedActor = HitResult.GetActor();
 
-    if(!DamagedActor)
+    if (!DamagedActor)
     {
         return;
     }

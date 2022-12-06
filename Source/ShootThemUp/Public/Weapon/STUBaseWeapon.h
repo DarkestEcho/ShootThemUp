@@ -15,7 +15,8 @@ class SHOOTTHEMUP_API ASTUBaseWeapon : public AActor
 public:
     ASTUBaseWeapon();
 
-    virtual void Fire();
+    virtual void StartFire();
+    virtual void StopFire();
 
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -30,8 +31,14 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     float MaxDeflectionAngle = 86.0f;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Damage")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     float DamageAmount = 10.0f;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    float TimeBetweenShots = 0.1f;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    float BulletSpread = 1.5f;
     
     virtual void BeginPlay() override;
 
@@ -50,4 +57,7 @@ protected:
     float GetAngleBetweenMuzzleAndHit(const FVector& HitPoint) const;
 
     void MakeDamage(const FHitResult& HitResult);
+private:
+    FTimerHandle ShotTimerHandle;
+    
 };
