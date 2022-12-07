@@ -26,21 +26,59 @@ void USTUWeaponComponent::StopFire()
     }
 }
 
+void USTUWeaponComponent::NextWeapon()
+{
+    CurrentWeaponIndex = (CurrentWeaponIndex + 1) % Weapons.Num();
+    EquipWeapon(CurrentWeaponIndex);
+}
+
 void USTUWeaponComponent::BeginPlay()
 {
     Super::BeginPlay();
-    SpawnWeapon();
+
+    CurrentWeaponIndex = 0;
+    SpawnWeapons();
+    EquipWeapon(CurrentWeaponIndex);
 }
 
-void USTUWeaponComponent::SpawnWeapon()
+void USTUWeaponComponent::SpawnWeapons()
 {
     if (ACharacter* Character = Cast<ACharacter>(GetOwner()))
     {
-        if ((CurrentWeapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponClass)))
+        for(const TSubclassOf<ASTUBaseWeapon>& WeaponClass : WeaponClasses)
         {
-            const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
-            CurrentWeapon->AttachToComponent(Character->GetMesh(), AttachmentRules, WeaponAttachPointName);
-            CurrentWeapon->SetOwner(Character);
-        }
+            if (ASTUBaseWeapon* Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponClass))
+            {
+                Weapon->SetOwner(Character);
+                Weapons.Add(Weapon);
+
+                AttachWeaponToSocket(Weapon, Character->GetMesh(), WeaponArmorySocketName);
+            }
+        }        
     }
+}
+
+void USTUWeaponComponent::EquipWeapon(int32 WeaponIndex)
+{
+    if (const ACharacter* Character = Cast<ACharacter>(GetOwner()))
+    {
+        if(CurrentWeapon)
+        {
+            AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponArmorySocketName);
+        }
+        
+        CurrentWeapon = Weapons[WeaponIndex];
+        AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponEquipSocketName);
+    }
+}
+
+void USTUWeaponComponent::AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName)
+{
+    if(!Weapon || !SceneComponent)
+    {
+        return;
+    }
+    
+    const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
+    Weapon->AttachToComponent(SceneComponent, AttachmentRules, SocketName);
 }
