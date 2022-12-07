@@ -47,7 +47,10 @@ private:
     
     void SpawnWeapons();
     void EquipWeapon(int32 WeaponIndex);
+    
     void PlayAnimMontage(UAnimMontage* Animation) const;
+    void InitAnimations();
+    void OnEquipFinished(USkeletalMeshComponent* MeshComponent) const;
     
     static void AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName);
 

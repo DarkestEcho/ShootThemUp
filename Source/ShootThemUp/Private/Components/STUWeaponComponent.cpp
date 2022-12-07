@@ -3,7 +3,10 @@
 
 #include "Components/STUWeaponComponent.h"
 #include "STUBaseWeapon.h"
+#include "Animations/STUEquipFinishedAnimNotify.h"
 #include "GameFramework/Character.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogWeaponComponent, All, All);
 
 USTUWeaponComponent::USTUWeaponComponent()
 {
@@ -37,6 +40,7 @@ void USTUWeaponComponent::BeginPlay()
     Super::BeginPlay();
 
     CurrentWeaponIndex = 0;
+    InitAnimations();
     SpawnWeapons();
     EquipWeapon(CurrentWeaponIndex);
 }
@@ -91,6 +95,33 @@ void USTUWeaponComponent::PlayAnimMontage(UAnimMontage* Animation) const
     if (ACharacter* Character = Cast<ACharacter>(GetOwner()))
     {
         Character->PlayAnimMontage(Animation);
+    }
+}
+
+void USTUWeaponComponent::InitAnimations()
+{
+    if(!EquipAnimMontage)
+    {
+        return;
+    }
+
+    const TArray<FAnimNotifyEvent> NotifyEvents = EquipAnimMontage->Notifies;
+
+    for(const FAnimNotifyEvent& NotifyEvent: NotifyEvents)
+    {
+        if(USTUEquipFinishedAnimNotify* EquipFinishedNotify = Cast<USTUEquipFinishedAnimNotify>(NotifyEvent.Notify))
+        {
+            EquipFinishedNotify->OnNotified.AddUObject(this, &USTUWeaponComponent::OnEquipFinished);
+            break;
+        }
+    }
+}
+
+void USTUWeaponComponent::OnEquipFinished(USkeletalMeshComponent* MeshComponent) const
+{
+    if (const ACharacter* Character = Cast<ACharacter>(GetOwner()); Character->GetMesh() == MeshComponent)
+    {
+        UE_LOG(LogWeaponComponent, Display, TEXT("Equip finished"));
     }
 }
 
