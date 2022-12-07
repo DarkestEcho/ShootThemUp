@@ -41,6 +41,18 @@ void USTUWeaponComponent::BeginPlay()
     EquipWeapon(CurrentWeaponIndex);
 }
 
+void USTUWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    Super::EndPlay(EndPlayReason);
+    CurrentWeapon = nullptr;
+    for(ASTUBaseWeapon* Weapon:Weapons)
+    {
+        Weapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+        Weapon->Destroy();
+    }
+    Weapons.Empty();
+}
+
 void USTUWeaponComponent::SpawnWeapons()
 {
     if (ACharacter* Character = Cast<ACharacter>(GetOwner()))
@@ -64,6 +76,7 @@ void USTUWeaponComponent::EquipWeapon(int32 WeaponIndex)
     {
         if(CurrentWeapon)
         {
+            CurrentWeapon->StopFire();
             AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponArmorySocketName);
         }
         
