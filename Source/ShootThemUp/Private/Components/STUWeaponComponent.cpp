@@ -12,7 +12,7 @@ USTUWeaponComponent::USTUWeaponComponent()
 
 void USTUWeaponComponent::StartFire()
 {
-    if(CurrentWeapon)
+    if (CurrentWeapon)
     {
         CurrentWeapon->StartFire();
     }
@@ -20,7 +20,7 @@ void USTUWeaponComponent::StartFire()
 
 void USTUWeaponComponent::StopFire()
 {
-    if(CurrentWeapon)
+    if (CurrentWeapon)
     {
         CurrentWeapon->StopFire();
     }
@@ -45,7 +45,7 @@ void USTUWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     Super::EndPlay(EndPlayReason);
     CurrentWeapon = nullptr;
-    for(ASTUBaseWeapon* Weapon:Weapons)
+    for (ASTUBaseWeapon* Weapon : Weapons)
     {
         Weapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
         Weapon->Destroy();
@@ -57,7 +57,7 @@ void USTUWeaponComponent::SpawnWeapons()
 {
     if (ACharacter* Character = Cast<ACharacter>(GetOwner()))
     {
-        for(const TSubclassOf<ASTUBaseWeapon>& WeaponClass : WeaponClasses)
+        for (const TSubclassOf<ASTUBaseWeapon>& WeaponClass : WeaponClasses)
         {
             if (ASTUBaseWeapon* Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponClass))
             {
@@ -66,7 +66,7 @@ void USTUWeaponComponent::SpawnWeapons()
 
                 AttachWeaponToSocket(Weapon, Character->GetMesh(), WeaponArmorySocketName);
             }
-        }        
+        }
     }
 }
 
@@ -74,24 +74,33 @@ void USTUWeaponComponent::EquipWeapon(int32 WeaponIndex)
 {
     if (const ACharacter* Character = Cast<ACharacter>(GetOwner()))
     {
-        if(CurrentWeapon)
+        if (CurrentWeapon)
         {
             CurrentWeapon->StopFire();
             AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponArmorySocketName);
         }
-        
+
         CurrentWeapon = Weapons[WeaponIndex];
         AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponEquipSocketName);
+        PlayAnimMontage(EquipAnimMontage);
+    }
+}
+
+void USTUWeaponComponent::PlayAnimMontage(UAnimMontage* Animation) const
+{
+    if (ACharacter* Character = Cast<ACharacter>(GetOwner()))
+    {
+        Character->PlayAnimMontage(Animation);
     }
 }
 
 void USTUWeaponComponent::AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName)
 {
-    if(!Weapon || !SceneComponent)
+    if (!Weapon || !SceneComponent)
     {
         return;
     }
-    
+
     const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
     Weapon->AttachToComponent(SceneComponent, AttachmentRules, SocketName);
 }
