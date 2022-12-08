@@ -6,8 +6,20 @@
 #include "Components/ActorComponent.h"
 #include "STUWeaponComponent.generated.h"
 
-
 class ASTUBaseWeapon;
+
+USTRUCT(BlueprintType)
+struct FWeaponData
+{
+    GENERATED_BODY()
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
+    TSubclassOf<ASTUBaseWeapon> WeaponClass;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
+    UAnimMontage* ReloadAnimMontage;
+};
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
 {
@@ -22,7 +34,7 @@ public:
 
 protected:
     UPROPERTY(EditDefaultsOnly, Category="Weapon")
-    TArray<TSubclassOf<ASTUBaseWeapon>> WeaponClasses;
+    TArray<FWeaponData> WeaponsData;
 
     UPROPERTY(EditDefaultsOnly, Category="Weapon")
     FName WeaponEquipSocketName = "WeaponSocket";
@@ -42,6 +54,9 @@ private:
 
     UPROPERTY()
     TArray<ASTUBaseWeapon*> Weapons;
+
+    UPROPERTY()
+    UAnimMontage* CurrentReloadAnimMontage = nullptr;
 
     bool bEquipAnimInProgress = false;
     int32 CurrentWeaponIndex = 0;

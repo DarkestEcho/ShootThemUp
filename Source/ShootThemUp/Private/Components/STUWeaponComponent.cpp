@@ -75,9 +75,9 @@ void USTUWeaponComponent::SpawnWeapons()
 {
     if (ACharacter* Character = Cast<ACharacter>(GetOwner()))
     {
-        for (const TSubclassOf<ASTUBaseWeapon>& WeaponClass : WeaponClasses)
+        for (const FWeaponData& WeaponData : WeaponsData)
         {
-            if (ASTUBaseWeapon* Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponClass))
+            if (ASTUBaseWeapon* Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponData.WeaponClass))
             {
                 Weapon->SetOwner(Character);
                 Weapons.Add(Weapon);
@@ -90,6 +90,12 @@ void USTUWeaponComponent::SpawnWeapons()
 
 void USTUWeaponComponent::EquipWeapon(int32 WeaponIndex)
 {
+    if(WeaponIndex < 0 || WeaponIndex >= Weapons.Num())
+    {
+        UE_LOG(LogWeaponComponent, Warning, TEXT("Invalid weapon index"));
+        return;
+    }
+    
     if (const ACharacter* Character = Cast<ACharacter>(GetOwner()))
     {
         if (CurrentWeapon)
