@@ -20,11 +20,18 @@ void ASTURifleWeapon::StopFire()
 
 void ASTURifleWeapon::MakeShot()
 {
+    if(IsAmmoEmpty())
+    {
+        StopFire();
+        return;
+    }
+    
     FVector TraceStart;
     FVector TraceEnd;
 
     if (!GetTracedData(TraceStart, TraceEnd))
     {
+        StopFire();
         return;
     }
 
@@ -43,6 +50,8 @@ void ASTURifleWeapon::MakeShot()
     {
         DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.0f, 0, 3.0f);
     }
+
+    DecreaseAmmo();
 }
 
 bool ASTURifleWeapon::GetTracedData(FVector& TraceStart, FVector& TraceEnd) const

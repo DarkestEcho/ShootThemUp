@@ -11,6 +11,11 @@ void ASTULauncherWeapon::StartFire()
 
 void ASTULauncherWeapon::MakeShot()
 {
+    if(IsAmmoEmpty())
+    {
+        return;
+    }
+    
     FVector TraceStart;
     FVector TraceEnd;
 
@@ -33,5 +38,5 @@ void ASTULauncherWeapon::MakeShot()
         Projectile->SetOwner(GetOwner());
         Projectile->FinishSpawning(SpawnTransform);
     }
-
+    DecreaseAmmo();
 }
