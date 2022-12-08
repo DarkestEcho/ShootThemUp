@@ -43,14 +43,18 @@ private:
     UPROPERTY()
     TArray<ASTUBaseWeapon*> Weapons;
 
+    bool bEquipAnimInProgress = false;
     int32 CurrentWeaponIndex = 0;
+
+    bool CanFire() const;
+    bool CanEquip() const;
     
     void SpawnWeapons();
     void EquipWeapon(int32 WeaponIndex);
     
     void PlayAnimMontage(UAnimMontage* Animation) const;
     void InitAnimations();
-    void OnEquipFinished(USkeletalMeshComponent* MeshComponent) const;
+    void OnEquipFinished(USkeletalMeshComponent* MeshComponent);
     
     static void AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName);
 
