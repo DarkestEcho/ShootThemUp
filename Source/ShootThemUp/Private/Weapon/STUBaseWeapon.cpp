@@ -34,6 +34,7 @@ void ASTUBaseWeapon::BeginPlay()
     checkf(DefaultAmmo.Clips > 0, TEXT("Clips count couldn't be less or equal zero"));
 
     CurrentAmmo = DefaultAmmo;
+    CurrentAmmo.Bullets = 0;
 }
 
 void ASTUBaseWeapon::MakeShot()
@@ -114,7 +115,8 @@ void ASTUBaseWeapon::DecreaseAmmo()
 {
     if (IsClipEmpty())
     {
-        UE_LOG(LogBaseWeapon, Warning, TEXT("Clip is empty"));
+        UE_LOG(LogBaseWeapon, Error, TEXT("Clip is empty"));
+        checkNoEntry();
         return;
     }
     

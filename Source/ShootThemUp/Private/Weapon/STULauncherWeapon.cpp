@@ -11,8 +11,12 @@ void ASTULauncherWeapon::StartFire()
 
 void ASTULauncherWeapon::MakeShot()
 {
-    if(IsAmmoEmpty())
+    if (IsClipEmpty())
     {
+        if (!IsAmmoEmpty())
+        {
+            OnClipEmpty.Broadcast();
+        }
         return;
     }
     
@@ -23,6 +27,8 @@ void ASTULauncherWeapon::MakeShot()
     {
         return;
     }
+    
+    DecreaseAmmo();
 
     FHitResult HitResult;
     MakeHit(HitResult, TraceStart, TraceEnd);
@@ -38,5 +44,4 @@ void ASTULauncherWeapon::MakeShot()
         Projectile->SetOwner(GetOwner());
         Projectile->FinishSpawning(SpawnTransform);
     }
-    DecreaseAmmo();
 }

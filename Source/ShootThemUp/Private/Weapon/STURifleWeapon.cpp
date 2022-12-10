@@ -20,9 +20,13 @@ void ASTURifleWeapon::StopFire()
 
 void ASTURifleWeapon::MakeShot()
 {
-    if(IsAmmoEmpty())
+    if (IsClipEmpty())
     {
         StopFire();
+        if (!IsAmmoEmpty())
+        {
+            OnClipEmpty.Broadcast();
+        }
         return;
     }
     
@@ -35,11 +39,13 @@ void ASTURifleWeapon::MakeShot()
         return;
     }
 
+    DecreaseAmmo();
+
     FHitResult HitResult;
     MakeHit(HitResult, TraceStart, TraceEnd);
 
     const float AngleBetween = GetAngleBetweenMuzzleAndHit(HitResult.ImpactPoint);
-    
+
     if (HitResult.bBlockingHit && AngleBetween <= MaxDeflectionAngle)
     {
         MakeDamage(HitResult);
@@ -50,8 +56,6 @@ void ASTURifleWeapon::MakeShot()
     {
         DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.0f, 0, 3.0f);
     }
-
-    DecreaseAmmo();
 }
 
 bool ASTURifleWeapon::GetTracedData(FVector& TraceStart, FVector& TraceEnd) const

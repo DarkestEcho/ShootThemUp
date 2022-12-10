@@ -173,7 +173,8 @@ void USTUWeaponComponent::InitAnimations()
             WeaponData.ReloadAnimMontage))
         {
             ReloadFinishedNotify->OnNotified.AddUObject(this, &USTUWeaponComponent::OnReloadFinished);
-        }else
+        }
+        else
         {
             UE_LOG(LogWeaponComponent, Error, TEXT("Reload Anim Notify not found"));
             checkNoEntry();
