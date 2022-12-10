@@ -5,9 +5,12 @@
 #include "STUBaseWeapon.h"
 #include "Animations/STUEquipFinishedAnimNotify.h"
 #include "Animations/STURealoadFinishedAnimNotify.h"
+#include "Animations/AnimUtils.h"
 #include "GameFramework/Character.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWeaponComponent, All, All);
+
+constexpr static int32 WeaponNum = 2;
 
 USTUWeaponComponent::USTUWeaponComponent()
 {
@@ -42,18 +45,13 @@ void USTUWeaponComponent::NextWeapon()
 
 void USTUWeaponComponent::Reload()
 {
-    StopFire();
-    if(!CanReload())
-    {
-        return;
-    }
-    bReloadAnimInProgress = true;
-    PlayAnimMontage(CurrentReloadAnimMontage);
+    ChangeClip();
 }
 
 void USTUWeaponComponent::BeginPlay()
 {
     Super::BeginPlay();
+    checkf(WeaponsData.Num() == WeaponNum, TEXT("Our character can hold onle %i weapon items"), WeaponNum);
 
     CurrentWeaponIndex = 0;
     InitAnimations();
@@ -85,7 +83,7 @@ bool USTUWeaponComponent::CanEquip() const
 
 bool USTUWeaponComponent::CanReload() const
 {
-    return CurrentWeapon && !bEquipAnimInProgress && !bReloadAnimInProgress; 
+    return CurrentWeapon && !bEquipAnimInProgress && !bReloadAnimInProgress && CurrentWeapon->CanReload();
 }
 
 void USTUWeaponComponent::SpawnWeapons()
@@ -96,6 +94,7 @@ void USTUWeaponComponent::SpawnWeapons()
         {
             if (ASTUBaseWeapon* Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(WeaponData.WeaponClass))
             {
+                Weapon->OnClipEmpty.AddUObject(this, &USTUWeaponComponent::OnClipEmpty);
                 Weapon->SetOwner(Character);
                 Weapons.Add(Weapon);
 
@@ -122,17 +121,30 @@ void USTUWeaponComponent::EquipWeapon(int32 WeaponIndex)
         }
 
         CurrentWeapon = Weapons[WeaponIndex];
-        
+
         const auto CurrenWeaponData = WeaponsData.FindByPredicate([&](const FWeaponData& Data)
         {
             return Data.WeaponClass == CurrentWeapon->GetClass();
         });
         CurrentReloadAnimMontage = CurrenWeaponData ? CurrenWeaponData->ReloadAnimMontage : nullptr;
-        
+
         AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponEquipSocketName);
         bEquipAnimInProgress = true;
         PlayAnimMontage(EquipAnimMontage);
     }
+}
+
+void USTUWeaponComponent::ChangeClip()
+{
+    if (!CanReload())
+    {
+        return;
+    }
+
+    StopFire();
+    CurrentWeapon->ChangeClip();
+    bReloadAnimInProgress = true;
+    PlayAnimMontage(CurrentReloadAnimMontage);
 }
 
 void USTUWeaponComponent::PlayAnimMontage(UAnimMontage* Animation) const
@@ -145,18 +157,26 @@ void USTUWeaponComponent::PlayAnimMontage(UAnimMontage* Animation) const
 
 void USTUWeaponComponent::InitAnimations()
 {
-    
-
-    if(USTUEquipFinishedAnimNotify* EquipFinishedNotify = FindNotifyByClass<USTUEquipFinishedAnimNotify>(EquipAnimMontage))
+    if (USTUEquipFinishedAnimNotify* EquipFinishedNotify = AnimUtils::FindNotifyByClass<USTUEquipFinishedAnimNotify>(EquipAnimMontage))
     {
         EquipFinishedNotify->OnNotified.AddUObject(this, &USTUWeaponComponent::OnEquipFinished);
     }
-
-    for(const FWeaponData& WeaponData: WeaponsData)
+    else
     {
-        if(USTURealoadFinishedAnimNotify* ReloadFinishedNotify = FindNotifyByClass<USTURealoadFinishedAnimNotify>(WeaponData.ReloadAnimMontage))
+        UE_LOG(LogWeaponComponent, Error, TEXT("Equip Anim Notify not found"));
+        checkNoEntry();
+    }
+
+    for (const FWeaponData& WeaponData : WeaponsData)
+    {
+        if (USTURealoadFinishedAnimNotify* ReloadFinishedNotify = AnimUtils::FindNotifyByClass<USTURealoadFinishedAnimNotify>(
+            WeaponData.ReloadAnimMontage))
         {
             ReloadFinishedNotify->OnNotified.AddUObject(this, &USTUWeaponComponent::OnReloadFinished);
+        }else
+        {
+            UE_LOG(LogWeaponComponent, Error, TEXT("Reload Anim Notify not found"));
+            checkNoEntry();
         }
     }
 }
@@ -176,6 +196,11 @@ void USTUWeaponComponent::OnReloadFinished(USkeletalMeshComponent* MeshComponent
         UE_LOG(LogWeaponComponent, Display, TEXT("OnReloadFinished"));
         bReloadAnimInProgress = false;
     }
+}
+
+void USTUWeaponComponent::OnClipEmpty()
+{
+    ChangeClip();
 }
 
 void USTUWeaponComponent::AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName)
