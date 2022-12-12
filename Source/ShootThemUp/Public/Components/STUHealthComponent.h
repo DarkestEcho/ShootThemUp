@@ -40,7 +40,7 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Heal", meta=(ClampMin = "0.0", EditCondition = "bAutoHeal"))
     float HealDelay = 3.0f;
     
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Heal", meta=(ClampMin = "0.1", EditCondition = "bAutoHeal"))
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Heal", meta=(ClampMin = "0.01", EditCondition = "bAutoHeal"))
     float HealModifier = 5.0f;
 
     virtual void BeginPlay() override;
