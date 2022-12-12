@@ -14,11 +14,15 @@ class SHOOTTHEMUP_API USTUHealthComponent : public UActorComponent
 
 public:
     USTUHealthComponent();
-
-    float GetHealth() const;
-
-    UFUNCTION(BlueprintCallable)
+    
+    UFUNCTION(BlueprintCallable, Category="Health")
     bool IsDead() const;
+    
+    UFUNCTION(BlueprintCallable, Category="Health")
+    float GetHealthPercent() const;
+    
+    
+    float GetHealth() const;
 
     FOnDeath OnDeath;
     FOnHealthChanged OnHealthChanged;
@@ -30,7 +34,7 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Heal")
     bool bAutoHeal = false;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Heal", meta=(ClampMin = "0.1", ClampMax="5.0"))
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Heal", meta=(ClampMin = "0.01", ClampMax="5.0"))
     float HealUpdateTime = 1.0f;
     
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Heal", meta=(ClampMin = "0.0", EditCondition = "bAutoHeal"))
