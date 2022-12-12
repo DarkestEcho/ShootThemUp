@@ -76,3 +76,6 @@ Plugins/Developer/RiderLink/Intermediate
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+Windows
+Windows/*
