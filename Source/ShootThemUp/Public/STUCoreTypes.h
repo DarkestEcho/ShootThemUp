@@ -2,11 +2,15 @@
 
 #include "STUCoreTypes.generated.h"
 
+// Weapon
 DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature);
-DECLARE_MULTICAST_DELEGATE(FOnDeath);
 
+// Health
+DECLARE_MULTICAST_DELEGATE(FOnDeath);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float);
 
+// Weapon
+#pragma region Weapon
 class ASTUBaseWeapon;
 
 USTRUCT(BlueprintType)
@@ -25,7 +29,6 @@ struct FAmmoData
     
 };
 
-
 USTRUCT(BlueprintType)
 struct FWeaponData
 {
@@ -37,4 +40,19 @@ struct FWeaponData
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
     UAnimMontage* ReloadAnimMontage;
 };
+#pragma endregion Weapon
 
+// UI
+#pragma region UI
+USTRUCT()
+struct FWeaponUIData
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="UI")
+    UTexture2D* MainIcon;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="UI")
+    UTexture2D* CrossHairIcon;
+};
+#pragma endregion UI
