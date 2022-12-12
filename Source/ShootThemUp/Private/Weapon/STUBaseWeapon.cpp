@@ -34,7 +34,6 @@ void ASTUBaseWeapon::BeginPlay()
     checkf(DefaultAmmo.Clips > 0, TEXT("Clips count couldn't be less or equal zero"));
 
     CurrentAmmo = DefaultAmmo;
-    CurrentAmmo.Bullets = 0;
 }
 
 void ASTUBaseWeapon::MakeShot()
