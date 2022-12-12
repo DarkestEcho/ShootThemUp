@@ -149,6 +149,11 @@ bool ASTUBaseWeapon::CanReload() const
     return CurrentAmmo.Bullets < DefaultAmmo.Bullets && (CurrentAmmo.bInfinite || CurrentAmmo.Clips > 0);
 }
 
+FWeaponUIData ASTUBaseWeapon::GetUIData() const
+{
+    return UIData;
+}
+
 void ASTUBaseWeapon::LogAmmo() const
 {
     FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Bullets) + " / ";
