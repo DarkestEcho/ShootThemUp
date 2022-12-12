@@ -44,7 +44,7 @@ struct FWeaponData
 
 // UI
 #pragma region UI
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FWeaponUIData
 {
     GENERATED_BODY()

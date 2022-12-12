@@ -16,5 +16,6 @@ public:
     UFUNCTION(BlueprintCallable, Category="UI")
     float GetHealthPercent() const;
 
+    UFUNCTION(BlueprintCallable, Category="UI")
     bool GetWeaponUIData(FWeaponUIData& UIData) const;
 };
