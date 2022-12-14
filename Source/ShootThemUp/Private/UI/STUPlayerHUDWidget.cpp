@@ -9,7 +9,7 @@
 
 float USTUPlayerHUDWidget::GetHealthPercent() const
 {
-    if (const USTUHealthComponent* HealthComponent = STUUtils::GetComponentFromPawn<USTUHealthComponent>(GetOwningPlayerPawn()))
+    if (const USTUHealthComponent* HealthComponent = GetHealthComponent())
     {
         return HealthComponent->GetHealthPercent();
     }
@@ -32,9 +32,26 @@ bool USTUPlayerHUDWidget::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
         return WeaponComponent->GetWeaponAmmoData(AmmoData);
     }
     return false;
+} 
+
+bool USTUPlayerHUDWidget::IsPlayerAlive() const
+{
+    const USTUHealthComponent* HealthComponent = GetHealthComponent();
+    return HealthComponent && !HealthComponent->IsDead();
+}
+
+bool USTUPlayerHUDWidget::IsPlayerSpectating() const
+{
+    const APlayerController* PlayerController = GetOwningPlayer();
+    return PlayerController && PlayerController->GetStateName() == NAME_Spectating;
 }
 
 USTUWeaponComponent* USTUPlayerHUDWidget::GetWeaponComponent() const
 {
     return STUUtils::GetComponentFromPawn<USTUWeaponComponent>(GetOwningPlayerPawn());
+}
+
+USTUHealthComponent* USTUPlayerHUDWidget::GetHealthComponent() const
+{
+    return STUUtils::GetComponentFromPawn<USTUHealthComponent>(GetOwningPlayerPawn());
 }
