@@ -58,6 +58,16 @@ bool USTUWeaponComponent::GetWeaponUIData(FWeaponUIData& UIData) const
     return false;
 }
 
+bool USTUWeaponComponent::GetWeaponAmmoData(FAmmoData& AmmoData) const
+{
+    if(CurrentWeapon)
+    {
+        AmmoData = CurrentWeapon->GetAmmoData();
+        return true;
+    }
+    return false;
+}
+
 void USTUWeaponComponent::BeginPlay()
 {
     Super::BeginPlay();
@@ -152,7 +162,7 @@ void USTUWeaponComponent::ChangeClip()
     }
 
     StopFire();
-    CurrentWeapon->ChangeClip();
+    //CurrentWeapon->ChangeClip();
     bReloadAnimInProgress = true;
     PlayAnimMontage(CurrentReloadAnimMontage);
 }
@@ -205,6 +215,7 @@ void USTUWeaponComponent::OnReloadFinished(USkeletalMeshComponent* MeshComponent
     if (const ACharacter* Character = Cast<ACharacter>(GetOwner()); Character->GetMesh() == MeshComponent)
     {
         UE_LOG(LogWeaponComponent, Display, TEXT("OnReloadFinished"));
+        CurrentWeapon->ChangeClip();
         bReloadAnimInProgress = false;
     }
 }
