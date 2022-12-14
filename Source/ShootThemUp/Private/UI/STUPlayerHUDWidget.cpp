@@ -9,7 +9,7 @@
 
 float USTUPlayerHUDWidget::GetHealthPercent() const
 {
-    if (const USTUHealthComponent* HealthComponent = GetHealthComponent())
+    if (const USTUHealthComponent* HealthComponent = STUUtils::GetComponentFromPawn<USTUHealthComponent>(GetOwningPlayerPawn()))
     {
         return HealthComponent->GetHealthPercent();
     }
@@ -18,7 +18,7 @@ float USTUPlayerHUDWidget::GetHealthPercent() const
 
 bool USTUPlayerHUDWidget::GetCurrentWeaponUIData(FWeaponUIData& UIData) const
 {
-    if (const USTUWeaponComponent* WeaponComponent = GetWeaponComponent())
+    if (const USTUWeaponComponent* WeaponComponent = STUUtils::GetComponentFromPawn<USTUWeaponComponent>(GetOwningPlayerPawn()))
     {
         return WeaponComponent->GetWeaponUIData(UIData);
     }
@@ -27,7 +27,7 @@ bool USTUPlayerHUDWidget::GetCurrentWeaponUIData(FWeaponUIData& UIData) const
 
 bool USTUPlayerHUDWidget::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
 {
-    if (const USTUWeaponComponent* WeaponComponent = GetWeaponComponent())
+    if (const USTUWeaponComponent* WeaponComponent = STUUtils::GetComponentFromPawn<USTUWeaponComponent>(GetOwningPlayerPawn()))
     {
         return WeaponComponent->GetWeaponAmmoData(AmmoData);
     }
@@ -36,7 +36,7 @@ bool USTUPlayerHUDWidget::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
 
 bool USTUPlayerHUDWidget::IsPlayerAlive() const
 {
-    const USTUHealthComponent* HealthComponent = GetHealthComponent();
+    const USTUHealthComponent* HealthComponent = STUUtils::GetComponentFromPawn<USTUHealthComponent>(GetOwningPlayerPawn());
     return HealthComponent && !HealthComponent->IsDead();
 }
 
@@ -44,14 +44,4 @@ bool USTUPlayerHUDWidget::IsPlayerSpectating() const
 {
     const APlayerController* PlayerController = GetOwningPlayer();
     return PlayerController && PlayerController->GetStateName() == NAME_Spectating;
-}
-
-USTUWeaponComponent* USTUPlayerHUDWidget::GetWeaponComponent() const
-{
-    return STUUtils::GetComponentFromPawn<USTUWeaponComponent>(GetOwningPlayerPawn());
-}
-
-USTUHealthComponent* USTUPlayerHUDWidget::GetHealthComponent() const
-{
-    return STUUtils::GetComponentFromPawn<USTUHealthComponent>(GetOwningPlayerPawn());
 }
