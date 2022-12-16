@@ -5,12 +5,12 @@ class STUUtils
 {
 public:
     template<class T>
-    static T* GetComponentFromPawn(const APawn* Pawn)
+    static T* GetComponentFromActor(const AActor* Actor)
     {
-        if(!Pawn)
+        if(!Actor)
         {
             return nullptr;
         }
-        return Cast<T>(Pawn->GetComponentByClass(T::StaticClass()));
+        return Cast<T>(Actor->GetComponentByClass(T::StaticClass()));
     }
 };
