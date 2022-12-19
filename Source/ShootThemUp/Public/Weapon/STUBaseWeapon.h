@@ -24,7 +24,8 @@ public:
 
     FWeaponUIData GetUIData() const;
     FAmmoData GetAmmoData() const;
-    
+
+    bool TryToAddAmmo(int32 ClipsAmount);
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     USkeletalMeshComponent* WeaponMesh;
@@ -61,6 +62,7 @@ protected:
     float GetAngleBetweenMuzzleAndHit(const FVector& HitPoint) const;
 
     bool IsAmmoEmpty() const;
+    bool IsAmmoFull() const;
     bool IsClipEmpty() const;
     void DecreaseAmmo();
     void LogAmmo() const;

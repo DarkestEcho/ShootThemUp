@@ -68,6 +68,18 @@ bool USTUWeaponComponent::GetWeaponAmmoData(FAmmoData& AmmoData) const
     return false;
 }
 
+bool USTUWeaponComponent::TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount)
+{
+    for(ASTUBaseWeapon* Weapon : Weapons)
+    {
+        if(Weapon && Weapon->IsA(WeaponType))
+        {
+            return Weapon->TryToAddAmmo(ClipsAmount);
+        }
+    }
+    return false;
+}
+
 void USTUWeaponComponent::BeginPlay()
 {
     Super::BeginPlay();
