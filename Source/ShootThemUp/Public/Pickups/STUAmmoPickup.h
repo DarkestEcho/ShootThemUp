@@ -13,5 +13,8 @@ UCLASS()
 class SHOOTTHEMUP_API ASTUAmmoPickup : public ASTUBasePickup
 {
 	GENERATED_BODY()
+
+private:
+    virtual bool TryGivePickupTo(APawn* PlayerPawn) override;
 	
 };
