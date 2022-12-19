@@ -25,7 +25,7 @@ void ASTURifleWeapon::MakeShot()
         StopFire();
         if (!IsAmmoEmpty())
         {
-            OnClipEmpty.Broadcast();
+            OnClipEmpty.Broadcast(this);
         }
         return;
     }

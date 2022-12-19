@@ -15,7 +15,7 @@ void ASTULauncherWeapon::MakeShot()
     {
         if (!IsAmmoEmpty())
         {
-            OnClipEmpty.Broadcast();
+            OnClipEmpty.Broadcast(this);
         }
         return;
     }

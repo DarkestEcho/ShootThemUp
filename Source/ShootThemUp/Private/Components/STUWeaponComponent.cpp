@@ -232,9 +232,26 @@ void USTUWeaponComponent::OnReloadFinished(USkeletalMeshComponent* MeshComponent
     }
 }
 
-void USTUWeaponComponent::OnClipEmpty()
+void USTUWeaponComponent::OnClipEmpty(ASTUBaseWeapon* AmmoEmptyWeapon)
 {
-    ChangeClip();
+    if(!AmmoEmptyWeapon)
+    {
+        return;
+    }
+    
+    if(CurrentWeapon == AmmoEmptyWeapon)
+    {
+        ChangeClip();
+        return;
+    }
+    
+    for(ASTUBaseWeapon* Weapon : Weapons)
+    {
+        if(Weapon == AmmoEmptyWeapon)
+        {
+                Weapon->ChangeClip();
+        }
+    }
 }
 
 void USTUWeaponComponent::AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName)

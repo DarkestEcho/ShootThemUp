@@ -70,7 +70,7 @@ private:
     
     void OnEquipFinished(USkeletalMeshComponent* MeshComponent);
     void OnReloadFinished(USkeletalMeshComponent* MeshComponent);
-    void OnClipEmpty();
+    void OnClipEmpty(ASTUBaseWeapon* AmmoEmptyWeapon);
     
     static void AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName);
 };

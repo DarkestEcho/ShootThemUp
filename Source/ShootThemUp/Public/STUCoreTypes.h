@@ -2,8 +2,10 @@
 
 #include "STUCoreTypes.generated.h"
 
+class ASTUBaseWeapon;
+
 // Weapon
-DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySignature, ASTUBaseWeapon*);
 
 // Health
 DECLARE_MULTICAST_DELEGATE(FOnDeath);
