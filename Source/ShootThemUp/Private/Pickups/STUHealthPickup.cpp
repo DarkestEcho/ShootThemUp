@@ -3,10 +3,16 @@
 
 #include "Pickups/STUHealthPickup.h"
 
+#include "STUHealthComponent.h"
+#include "STUUtils.h"
+
 DEFINE_LOG_CATEGORY_STATIC(LogHealthPickup, All, All);
 
 bool ASTUHealthPickup::TryGivePickupTo(APawn* PlayerPawn)
 {
-    UE_LOG(LogHealthPickup, Display, TEXT("Health was taken"));
-    return true;
+    if(USTUHealthComponent* HealthComponent = STUUtils::GetComponentFromActor<USTUHealthComponent>(PlayerPawn))
+    {
+        return HealthComponent->TryAddHealth(HealthAmount);
+    }
+    return false;
 }
