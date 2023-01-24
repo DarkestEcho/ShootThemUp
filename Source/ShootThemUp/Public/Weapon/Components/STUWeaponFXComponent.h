@@ -15,7 +15,6 @@ class SHOOTTHEMUP_API USTUWeaponFXComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	USTUWeaponFXComponent();
 
     void PlayImpactFX(const FHitResult& Hit) const;
@@ -27,9 +26,3 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="VFX")
     TMap<UPhysicalMaterial*, FImpactData> ImpactDataMap;
 };
-
-
-	
-
-   
-  

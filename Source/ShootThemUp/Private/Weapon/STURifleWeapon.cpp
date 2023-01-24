@@ -66,10 +66,6 @@ void ASTURifleWeapon::MakeShot()
         //DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 5.0f);
         WeaponFXComponent->PlayImpactFX(HitResult);
     }
-    else
-    {
-        DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.0f, 0, 3.0f);
-    }
 }
 
 bool ASTURifleWeapon::GetTracedData(FVector& TraceStart, FVector& TraceEnd) const

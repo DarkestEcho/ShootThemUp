@@ -29,7 +29,7 @@ protected:
     
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     float DamageAmount = 10.0f;
-
+    
     UPROPERTY(VisibleAnywhere, Category="VFX")
     USTUWeaponFXComponent* WeaponFXComponent;
 
