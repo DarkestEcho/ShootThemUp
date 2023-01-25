@@ -78,6 +78,7 @@ void USTUHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, co
         GetWorld()->GetTimerManager().SetTimer(HealTimerHandle, this, &USTUHealthComponent::HealUpdate, HealUpdateTime, true, HealDelay);
     }
     //UE_LOG(LogHealthComponent, Display, TEXT("Damage: %.2f from %s to %s"), Damage, DamageCauser ? *DamageCauser->GetName() : *FString("Undefine"), *GetOwner()->GetName());
+    PlayCameraShake();
 }
 
 void USTUHealthComponent::HealUpdate()
@@ -94,4 +95,20 @@ void USTUHealthComponent::SetHealth(float NewHealth)
 {
     Health = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
     OnHealthChanged.Broadcast(Health);
+}
+
+void USTUHealthComponent::PlayCameraShake() const
+{
+    if (IsDead())
+    {
+        return;
+    }
+
+    if(const APawn* Player = GetOwner<APawn>())
+    {
+        if(const APlayerController* Controller = Player->GetController<APlayerController>(); Controller->PlayerCameraManager)
+        {
+            Controller->PlayerCameraManager->StartCameraShake(CameraShake);
+        }
+    }
 }
