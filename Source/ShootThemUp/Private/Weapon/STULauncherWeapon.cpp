@@ -44,4 +44,7 @@ void ASTULauncherWeapon::MakeShot()
         Projectile->SetOwner(GetOwner());
         Projectile->FinishSpawning(SpawnTransform);
     }
+
+    // ReSharper disable once CppExpressionWithoutSideEffects
+    SpawnMuzzleFX();
 }

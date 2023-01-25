@@ -5,6 +5,7 @@
 
 #include "Components/STUWeaponFXComponent.h"
 #include "Engine/DamageEvents.h"
+#include "NiagaraComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogRifleWeapon, All, All);
 
@@ -15,6 +16,7 @@ ASTURifleWeapon::ASTURifleWeapon()
 
 void ASTURifleWeapon::StartFire()
 {
+    InitMuzzleFX();
     GetWorld()->GetTimerManager().SetTimer(ShotTimerHandle, this, &ASTURifleWeapon::MakeShot, TimeBetweenShots, true);
     MakeShot();
 }
@@ -22,6 +24,7 @@ void ASTURifleWeapon::StartFire()
 void ASTURifleWeapon::StopFire()
 {
     GetWorld()->GetTimerManager().ClearTimer(ShotTimerHandle);
+    SetMuzzleFXVisibility(false);
 }
 
 void ASTURifleWeapon::BeginPlay()
@@ -96,4 +99,22 @@ void ASTURifleWeapon::MakeDamage(const FHitResult& HitResult)
     }
 
     DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
+}
+
+void ASTURifleWeapon::InitMuzzleFX()
+{
+    if(!MuzzleFXComponent)
+    {
+        MuzzleFXComponent = SpawnMuzzleFX();
+    }
+    SetMuzzleFXVisibility(true);
+}
+
+void ASTURifleWeapon::SetMuzzleFXVisibility(const bool bVisible) const
+{
+    if(MuzzleFXComponent)
+    {
+        MuzzleFXComponent->SetPaused(!bVisible);
+        MuzzleFXComponent->SetVisibility(bVisible);
+    }
 }

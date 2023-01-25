@@ -7,6 +7,7 @@
 #include "STURifleWeapon.generated.h"
 
 class USTUWeaponFXComponent;
+class UNiagaraComponent;
 /**
  * 
  */
@@ -37,10 +38,14 @@ protected:
     virtual void MakeShot() override;
     virtual bool GetTracedData(FVector& TraceStart, FVector& TraceEnd) const override;
 
-
 private:
     FTimerHandle ShotTimerHandle;
 
+    UPROPERTY()
+    UNiagaraComponent* MuzzleFXComponent;
     
     void MakeDamage(const FHitResult& HitResult);
+
+    void InitMuzzleFX();
+    void SetMuzzleFXVisibility(bool bVisible) const;
 };
