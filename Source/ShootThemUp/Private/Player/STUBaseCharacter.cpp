@@ -50,7 +50,7 @@ void ASTUBaseCharacter::BeginPlay()
     check(GetCharacterMovement());
     check(GetMesh());
 
-    OnHealthChanged(HealthComponent->GetHealth());
+    OnHealthChanged(HealthComponent->GetHealth(), 0.0f);
     HealthComponent->OnDeath.AddUObject(this, &ASTUBaseCharacter::OnDeath);
     HealthComponent->OnHealthChanged.AddUObject(this, &ASTUBaseCharacter::OnHealthChanged);
 
@@ -157,7 +157,7 @@ void ASTUBaseCharacter::OnDeath()
     GetMesh()->SetSimulatePhysics(true);
 }
 
-void ASTUBaseCharacter::OnHealthChanged(float Health) const
+void ASTUBaseCharacter::OnHealthChanged(float Health, float HealthDelta) const
 {
     HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
 }

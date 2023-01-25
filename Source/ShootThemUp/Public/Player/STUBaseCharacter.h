@@ -73,7 +73,7 @@ private:
     void OnGroundLanded(const FHitResult& Hit);
     
     void OnDeath();
-    void OnHealthChanged(float Health) const;
+    void OnHealthChanged(float Health, float HealthDelta) const;
     
     void MoveForward(float Amount);
     void MoveRight(float Amount);

@@ -93,8 +93,12 @@ void USTUHealthComponent::HealUpdate()
 
 void USTUHealthComponent::SetHealth(float NewHealth)
 {
-    Health = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
-    OnHealthChanged.Broadcast(Health);
+    const float NextHealth = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
+    const float HealthDelta = NextHealth - Health;
+    
+    Health = NextHealth;
+    
+    OnHealthChanged.Broadcast(Health, HealthDelta);
 }
 
 void USTUHealthComponent::PlayCameraShake() const
@@ -106,9 +110,12 @@ void USTUHealthComponent::PlayCameraShake() const
 
     if(const APawn* Player = GetOwner<APawn>())
     {
-        if(const APlayerController* Controller = Player->GetController<APlayerController>(); Controller->PlayerCameraManager)
+        if(const APlayerController* Controller = Player->GetController<APlayerController>())
         {
-            Controller->PlayerCameraManager->StartCameraShake(CameraShake);
+            if(Controller->PlayerCameraManager)
+            {
+                Controller->PlayerCameraManager->StartCameraShake(CameraShake);
+            }
         }
     }
 }
