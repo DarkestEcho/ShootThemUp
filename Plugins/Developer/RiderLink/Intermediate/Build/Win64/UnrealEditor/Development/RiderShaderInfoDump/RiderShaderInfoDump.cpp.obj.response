@@ -1,4 +1,4 @@
-D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RiderShaderInfoDump\RiderShaderInfoDump.cpp
+C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RiderShaderInfoDump\RiderShaderInfoDump.cpp
 /I .
 /I Runtime
 /I Runtime\TraceLog\Public
@@ -7,16 +7,17 @@ D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\Ri
 /I Runtime\Json\Public
 /I Runtime\RenderCore\Public
 /I Runtime\RHI\Public
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source
-/I ThirdParty\mimalloc\include
-/I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
-/FI"D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderShaderInfoDump\Definitions.h"
-/Fo"D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderShaderInfoDump\RiderShaderInfoDump.cpp.obj"
-/sourceDependencies D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderShaderInfoDump\RiderShaderInfoDump.cpp.dep.json
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source
+/external:W0
+/external:I ThirdParty\mimalloc\include
+/external:I C:\Dev\VisualStudio\VC\Tools\MSVC\14.33.31629\INCLUDE
+/external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\ucrt"
+/external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\shared"
+/external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\um"
+/external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\winrt"
+/FI"C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderShaderInfoDump\Definitions.h"
+/Fo"C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderShaderInfoDump\RiderShaderInfoDump.cpp.obj"
+/sourceDependencies C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderShaderInfoDump\RiderShaderInfoDump.cpp.dep.json
 /Zc:inline
 /nologo
 /Oi

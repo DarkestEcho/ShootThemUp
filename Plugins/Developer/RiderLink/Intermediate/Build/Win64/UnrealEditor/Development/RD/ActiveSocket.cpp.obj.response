@@ -1,33 +1,34 @@
-D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src\ActiveSocket.cpp
+C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src\ActiveSocket.cpp
 /I .
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp\src\main
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main\util
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src\rd_gen_cpp\src
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\ordered-map\include
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\optional\tl
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\variant\include
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\string-view-lite\include
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src
-/I D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\CTPL\include
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp\src\main
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main\util
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\src\rd_gen_cpp\src
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\ordered-map\include
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\optional\tl
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\variant\include
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\string-view-lite\include
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src
+/I C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Source\RD\thirdparty\CTPL\include
 /I Runtime
 /I Runtime\TraceLog\Public
 /I Runtime\Core\Public
-/I ThirdParty\mimalloc\include
-/I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
-/FI"D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\Definitions.h"
-/Fo"D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\ActiveSocket.cpp.obj"
-/sourceDependencies D:\projects\Personal\Study\UE_dev_on_cpp_course\ShootThemUp\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\ActiveSocket.cpp.dep.json
+/external:W0
+/external:I ThirdParty\mimalloc\include
+/external:I C:\Dev\VisualStudio\VC\Tools\MSVC\14.33.31629\INCLUDE
+/external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\ucrt"
+/external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\shared"
+/external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\um"
+/external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\winrt"
+/FI"C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\Definitions.h"
+/Fo"C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\ActiveSocket.cpp.obj"
+/sourceDependencies C:\Projects\Unreal\ShootThemUp\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\ActiveSocket.cpp.dep.json
 /Zc:inline
 /nologo
 /Oi
