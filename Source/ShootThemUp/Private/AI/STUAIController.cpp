@@ -4,6 +4,13 @@
 #include "AI/STUAIController.h"
 
 #include "STUAICharacter.h"
+#include "STUAIPerceptionComponent.h"
+
+ASTUAIController::ASTUAIController()
+{
+    STUAIPerceptionComponent = CreateDefaultSubobject<USTUAIPerceptionComponent>("STUAIPerceptionComponent");
+    SetPerceptionComponent(*STUAIPerceptionComponent);
+}
 
 void ASTUAIController::OnPossess(APawn* InPawn)
 {
@@ -13,4 +20,12 @@ void ASTUAIController::OnPossess(APawn* InPawn)
     {
         RunBehaviorTree(AICharacter->BehaviorTreeAsset);
     }
+}
+
+void ASTUAIController::Tick(float DeltaSeconds)
+{
+    Super::Tick(DeltaSeconds);
+
+    AActor* AimActor = STUAIPerceptionComponent->GetClosestEnemy();
+    SetFocus(AimActor);
 }

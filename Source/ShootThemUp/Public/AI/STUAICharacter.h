@@ -7,9 +7,7 @@
 #include "STUAICharacter.generated.h"
 
 class UBehaviorTree;
-/**
- * 
- */
+
 UCLASS()
 class SHOOTTHEMUP_API ASTUAICharacter : public ASTUBaseCharacter
 {
