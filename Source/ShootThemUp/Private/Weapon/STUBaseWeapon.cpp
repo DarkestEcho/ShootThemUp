@@ -7,6 +7,7 @@
 #include "Engine/DamageEvents.h"
 #include "GameFramework/Character.h"
 #include "NiagaraComponent.h"
+#include "STUBaseCharacter.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All);
 
@@ -50,15 +51,27 @@ APlayerController* ASTUBaseWeapon::GetPlayerController() const
 
 bool ASTUBaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const
 {
-    const APlayerController* Controller = GetPlayerController();
-
-    if (!Controller)
+    const ACharacter* Character = Cast<ACharacter>(GetOwner());
+    if(!Character)
     {
         return false;
     }
 
-    Controller->GetPlayerViewPoint(ViewLocation, ViewRotation);
-    return true;
+    if(!Character->IsPlayerControlled())
+    {
+        ViewLocation = GetMuzzleWorldLocation();
+        ViewRotation = WeaponMesh->GetSocketRotation(MuzzleSocketName);
+
+        return true;
+    }
+    
+    if (const APlayerController* Controller = GetPlayerController())
+    {
+        Controller->GetPlayerViewPoint(ViewLocation, ViewRotation);
+        return true;
+    }
+
+    return false;
 }
 
 bool ASTUBaseWeapon::GetTracedData(FVector& TraceStart, FVector& TraceEnd) const
