@@ -20,8 +20,11 @@ public:
 
     virtual void StartFire();
     virtual void StopFire();
+    
     void ChangeClip();
+    
     bool CanReload() const;
+    bool IsAmmoEmpty() const;
 
     FWeaponUIData GetUIData() const;
     FAmmoData GetAmmoData() const;
@@ -64,8 +67,7 @@ protected:
     void MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd) const;
 
     float GetAngleBetweenMuzzleAndHit(const FVector& HitPoint) const;
-
-    bool IsAmmoEmpty() const;
+    
     bool IsAmmoFull() const;
     bool IsClipEmpty() const;
     void DecreaseAmmo();

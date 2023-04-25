@@ -17,9 +17,9 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
 public:	
 	USTUWeaponComponent();
 
-    void StartFire();
+    virtual void StartFire();
     void StopFire();
-    void NextWeapon();
+    virtual void NextWeapon();
     void Reload();
 
     bool GetWeaponUIData(FWeaponUIData& UIData) const;
@@ -39,30 +39,33 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, Category="Animation")
     UAnimMontage* EquipAnimMontage;
-    
-	virtual void BeginPlay() override;
-    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-private:
     UPROPERTY( )
     ASTUBaseWeapon* CurrentWeapon = nullptr;
 
     UPROPERTY()
     TArray<ASTUBaseWeapon*> Weapons;
 
+    int32 CurrentWeaponIndex = 0;
+    
+	virtual void BeginPlay() override;
+    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+    
+    bool CanFire() const;
+    bool CanEquip() const;
+
+    void EquipWeapon(int32 WeaponIndex);
+    
+private:
     UPROPERTY()
     UAnimMontage* CurrentReloadAnimMontage = nullptr;
 
     bool bEquipAnimInProgress = false;
     bool bReloadAnimInProgress = false;
-    int32 CurrentWeaponIndex = 0;
 
-    bool CanFire() const;
-    bool CanEquip() const;
     bool CanReload() const;
     
     void SpawnWeapons();
-    void EquipWeapon(int32 WeaponIndex);
     void ChangeClip();
     
     void PlayAnimMontage(UAnimMontage* Animation) const;
