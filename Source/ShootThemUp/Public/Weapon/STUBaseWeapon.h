@@ -25,6 +25,7 @@ public:
     
     bool CanReload() const;
     bool IsAmmoEmpty() const;
+    bool IsAmmoFull() const;
 
     FWeaponUIData GetUIData() const;
     FAmmoData GetAmmoData() const;
@@ -68,7 +69,6 @@ protected:
 
     float GetAngleBetweenMuzzleAndHit(const FVector& HitPoint) const;
     
-    bool IsAmmoFull() const;
     bool IsClipEmpty() const;
     void DecreaseAmmo();
     void LogAmmo() const;

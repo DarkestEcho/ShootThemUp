@@ -68,6 +68,18 @@ bool USTUWeaponComponent::GetWeaponAmmoData(FAmmoData& AmmoData) const
     return false;
 }
 
+bool USTUWeaponComponent::IsNeedAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType) const
+{
+    for(const ASTUBaseWeapon* Weapon : Weapons)
+    {
+        if(Weapon && Weapon->IsA(WeaponType))
+        {
+            return !Weapon->IsAmmoFull();
+        }
+    }
+    return false;
+}
+
 bool USTUWeaponComponent::TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount)
 {
     for(ASTUBaseWeapon* Weapon : Weapons)
