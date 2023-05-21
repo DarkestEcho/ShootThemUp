@@ -40,4 +40,7 @@ private:
     void SpawnBots();
     void StartRound();
     void GameRoundUpdate();
+
+    void ResetPlayers();
+    void ResetOnePlayer(AController* Controller);
 };
