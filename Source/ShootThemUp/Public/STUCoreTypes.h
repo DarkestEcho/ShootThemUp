@@ -92,3 +92,11 @@ struct FImpactData
     FDecalData DecalData;
 };
 #pragma endregion VFX
+
+USTRUCT(BlueprintType)
+struct FGameData
+{
+    GENERATED_BODY()
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Game", meta=(ClampMin = "1", ClampMax = "100"))
+    int32 PlayersNum = 2;
+};
