@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "STUPlayerState.h"
 #include "GameFramework/Character.h"
 #include "STUBaseCharacter.generated.h"
 
@@ -49,6 +50,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category="Damage")
     FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
 
+    UPROPERTY(EditDefaultsOnly, Category="Material")
+    FName MaterialColorName = "Paint Color";
+
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
@@ -66,6 +70,8 @@ public:
 
     UFUNCTION(BlueprintCallable, Category= "Movement")
     float GetMovementDirection() const;
+    
+    void SetPlayerColor(FLinearColor Color) const;
 
 private:
     bool bRunning = false;
