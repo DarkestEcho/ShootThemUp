@@ -126,7 +126,9 @@ void USTUHealthComponent::PlayCameraShake() const
 void USTUHealthComponent::Killed(const AController* KillerController) const
 {
     const APawn* Player = Cast<APawn>(GetOwner());
-    const AController* VictimController = Player->Controller;
+    AController* VictimController = Player->Controller;
+
+    ASTUGameModeBase* GameMode = Cast<ASTUGameModeBase>(GetWorld()->GetAuthGameMode());
     
-    ASTUGameModeBase::Killed(KillerController, VictimController);
+    GameMode->Killed(KillerController, VictimController);
 }

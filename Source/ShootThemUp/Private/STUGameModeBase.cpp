@@ -6,6 +6,8 @@
 #include "AIController.h"
 #include "STUGameHUD.h"
 #include "STUPlayerState.h"
+#include "STURespawnComponent.h"
+#include "STUUtils.h"
 #include "Player/STUBaseCharacter.h"
 #include "Player/STUPlayerController.h"
 
@@ -39,7 +41,7 @@ UClass* ASTUGameModeBase::GetDefaultPawnClassForController_Implementation(AContr
     return Super::GetDefaultPawnClassForController_Implementation(InController);
 }
 
-void ASTUGameModeBase::Killed(const AController* KillerController, const AController* VictimController)
+void ASTUGameModeBase::Killed(const AController* KillerController, AController* VictimController)
 {
     ASTUPlayerState* KillerPlayerState = KillerController ? KillerController->GetPlayerState<ASTUPlayerState>() : nullptr;
     ASTUPlayerState* VictimPlayerState = VictimController ? VictimController->GetPlayerState<ASTUPlayerState>() : nullptr;
@@ -53,6 +55,8 @@ void ASTUGameModeBase::Killed(const AController* KillerController, const AContro
     {
         VictimPlayerState->AddDeath();
     }
+
+    StartRespawn(VictimController);
 }
 
 FGameData ASTUGameModeBase::GetGameData() const
@@ -201,4 +205,24 @@ void ASTUGameModeBase::LogPlayerInfo() const
 
         PlayerState->LogInfo();
     }
+}
+
+void ASTUGameModeBase::StartRespawn(const AController* Controller) const
+{
+    const bool bRespawnAvailable = RoundCountDown > GameData.MinRoundTimeForRespawn + GameData.RespawnTime;
+
+    if(!bRespawnAvailable)
+    {
+        return;
+    }
+    
+    if(USTURespawnComponent* RespawnComponent = STUUtils::GetComponentFromActor<USTURespawnComponent>(Controller))
+    {
+        RespawnComponent->Respawn(GameData.RespawnTime);
+    }
+}
+
+void ASTUGameModeBase::RespawnRequest(AController* Controller )
+{
+    ResetOnePlayer(Controller);
 }
