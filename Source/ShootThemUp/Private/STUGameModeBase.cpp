@@ -55,6 +55,21 @@ void ASTUGameModeBase::Killed(const AController* KillerController, const AContro
     }
 }
 
+FGameData ASTUGameModeBase::GetGameData() const
+{
+    return GameData;
+}
+
+int32 ASTUGameModeBase::GetCurrentRoundNum() const
+{
+    return CurrentRound;
+}
+
+int32 ASTUGameModeBase::GetRoundSecondRemaining() const
+{
+    return RoundCountDown;
+}
+
 void ASTUGameModeBase::SpawnBots()
 {
     for (int32 i = 0; i < GameData.PlayersNum - 1; ++i)

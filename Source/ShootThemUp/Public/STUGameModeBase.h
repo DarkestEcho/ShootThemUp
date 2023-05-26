@@ -23,6 +23,10 @@ public:
 
     static void Killed(const AController* KillerController, const AController* VictimController);
 
+    FGameData GetGameData() const;
+    int32 GetCurrentRoundNum() const;
+    int32 GetRoundSecondRemaining() const;
+
 protected:
     UPROPERTY(EditDefaultsOnly, Category="Game")
     TSubclassOf<AAIController> AIControllerClass;
