@@ -3,6 +3,8 @@
 
 #include "Components/STUHealthComponent.h"
 
+#include "STUGameModeBase.h"
+
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All);
 
 USTUHealthComponent::USTUHealthComponent()
@@ -71,6 +73,7 @@ void USTUHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, co
 
     if (IsDead())
     {
+        Killed(InstigatedBy);
         OnDeath.Broadcast();
     }
     else if (bAutoHeal)
@@ -118,4 +121,12 @@ void USTUHealthComponent::PlayCameraShake() const
             }
         }
     }
+}
+
+void USTUHealthComponent::Killed(const AController* KillerController) const
+{
+    const APawn* Player = Cast<APawn>(GetOwner());
+    const AController* VictimController = Player->Controller;
+    
+    ASTUGameModeBase::Killed(KillerController, VictimController);
 }

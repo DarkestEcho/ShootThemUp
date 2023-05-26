@@ -19,8 +19,19 @@ public:
 
     void SetTeamColor(const FLinearColor& Color);
     FLinearColor GetTeamColor() const;
+
+    void AddKill();
+    int32 GetKillsNum() const;
+    
+    void AddDeath();
+    int32 GetDeathsNum() const;
+    
+    void LogInfo() const;
     
 private:
     int32 TeamID;
     FLinearColor TeamColor;
+
+    int32 KillsNum = 0;
+    int32 DeathsNum = 0;
 };
