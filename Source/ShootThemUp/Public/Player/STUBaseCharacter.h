@@ -8,10 +8,7 @@
 #include "STUBaseCharacter.generated.h"
 
 class USTUWeaponComponent;
-class UTextRenderComponent;
 class USTUHealthComponent;
-class USpringArmComponent;
-class UCameraComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
@@ -24,16 +21,7 @@ public:
 
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
-    USpringArmComponent* SpringArmComponent;
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
-    UCameraComponent* CameraComponent;
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
     USTUHealthComponent* HealthComponent;
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
-    UTextRenderComponent* HealthTextComponent;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
     USTUWeaponComponent* WeaponComponent;
@@ -59,14 +47,10 @@ protected:
     virtual void OnDeath();
 
 public:
-    // Called every frame
     virtual void Tick(float DeltaTime) override;
 
-    // Called to bind functionality to input
-    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
     UFUNCTION(BlueprintCallable, Category= "Movement")
-    bool IsRunning() const;
+    virtual bool IsRunning() const;
 
     UFUNCTION(BlueprintCallable, Category= "Movement")
     float GetMovementDirection() const;
@@ -74,17 +58,8 @@ public:
     void SetPlayerColor(FLinearColor Color) const;
 
 private:
-    bool bRunning = false;
-    bool bMovingForward = false;
-
     UFUNCTION()
     void OnGroundLanded(const FHitResult& Hit);
     
     void OnHealthChanged(float Health, float HealthDelta) const;
-    
-    void MoveForward(float Amount);
-    void MoveRight(float Amount);
-
-    void StartRunning();
-    void StopRunning();
 };
