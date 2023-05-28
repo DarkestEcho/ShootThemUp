@@ -133,5 +133,6 @@ void ASTUPlayerCharacter::CheckCameraOverlap() const
         {
             MeshCildGeometry->SetOwnerNoSee(bHideMesh);
         }
+        
     }
 }

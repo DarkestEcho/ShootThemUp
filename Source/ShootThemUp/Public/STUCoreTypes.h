@@ -22,13 +22,13 @@ struct FAmmoData
     GENERATED_BODY()
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Ammo")
-    int32 Bullets = 20;
+    int32 Bullets;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Ammo", meta=(EditCondition = "!bInfinite"))
-    int32 Clips = 5;
+    int32 Clips;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Ammo")
-    bool bInfinite = false;
+    bool bInfinite;
     
 };
 
