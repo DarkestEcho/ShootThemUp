@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "STUCoreTypes.h"
 #include "GameFramework/HUD.h"
 #include "STUGameHUD.generated.h"
 
@@ -25,4 +26,6 @@ protected:
 
 private:
     void DrawCrossHair();
+
+    void OnMatchStateChanged(ESTUMatchState State);
 };
