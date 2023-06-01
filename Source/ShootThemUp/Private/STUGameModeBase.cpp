@@ -256,3 +256,27 @@ void ASTUGameModeBase::RespawnRequest(AController* Controller )
 {
     ResetOnePlayer(Controller);
 }
+
+bool ASTUGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
+{
+    const bool bPause = Super::SetPause(PC, CanUnpauseDelegate);
+
+    if(bPause)
+    {
+        SetMatchState(ESTUMatchState::Pause);
+    }
+    
+    return bPause;
+}
+
+bool ASTUGameModeBase::ClearPause()
+{
+    const bool bPauseCleared = Super::ClearPause();
+
+    if(bPauseCleared)
+    {
+        SetMatchState(ESTUMatchState::InProgress);
+    }
+
+    return bPauseCleared;
+}
