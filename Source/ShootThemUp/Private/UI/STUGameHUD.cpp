@@ -24,6 +24,7 @@ void ASTUGameHUD::BeginPlay()
     
     GameWidgets.Add(ESTUMatchState::InProgress, CreateWidget(GetWorld(), PlayerHUDWidgetClass));
     GameWidgets.Add(ESTUMatchState::Pause, CreateWidget(GetWorld(), PauseWidgetClass));
+    GameWidgets.Add(ESTUMatchState::GameOver, CreateWidget(GetWorld(), GameOverWidgetClass));
 
     for(const TTuple<ESTUMatchState, UUserWidget*> GameWidgetPair: GameWidgets)
     {
