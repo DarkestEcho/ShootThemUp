@@ -130,3 +130,10 @@ enum class ESTUMatchState: uint8
 };
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnMatchStateChangeSignature, ESTUMatchState);
+
+UENUM()
+enum class ESTULevels: uint8
+{
+    MainMenu = 0,
+    TestLevel
+};

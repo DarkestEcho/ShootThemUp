@@ -14,14 +14,4 @@ UCLASS()
 class SHOOTTHEMUP_API USTUMenuWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
-protected:
-    UPROPERTY(meta=(BindWidget))
-    UButton* StartGameButton;
-    
-    virtual void NativeOnInitialized() override;
-
-private:
-    UFUNCTION()
-    void OnStartGame();
 };

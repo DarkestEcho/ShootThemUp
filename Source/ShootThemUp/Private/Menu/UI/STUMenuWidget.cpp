@@ -3,21 +3,8 @@
 
 #include "Menu/UI/STUMenuWidget.h"
 
+#include "STUGameInstance.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 
-void USTUMenuWidget::NativeOnInitialized()
-{
-    Super::NativeOnInitialized();
-
-    if(StartGameButton)
-    {
-        StartGameButton->OnClicked.AddDynamic(this, &USTUMenuWidget::OnStartGame);
-    }
-}
-
-void USTUMenuWidget::OnStartGame()
-{
-    const FName StartupLevelName = "TestLevel";
-    UGameplayStatics::OpenLevel(this, StartupLevelName);
-}
+DEFINE_LOG_CATEGORY_STATIC(LogSTUMenuWidget, All, All);
