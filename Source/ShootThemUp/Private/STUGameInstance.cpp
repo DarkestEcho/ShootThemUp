@@ -8,3 +8,18 @@ FName USTUGameInstance::GetLevelName(ESTULevels Level) const
 {
     return LevelsName.Contains(Level) ? LevelsName[Level] : NAME_None;
 }
+
+TArray<FLevelData> USTUGameInstance::GetLevelsData() const
+{
+    return LevelsData;
+}
+
+FLevelData USTUGameInstance::GetCurrentLevel() const
+{
+    return CurrentLevel;
+}
+
+void USTUGameInstance::SetCurrentLevel(const FLevelData& Level)
+{
+    CurrentLevel = Level;
+}

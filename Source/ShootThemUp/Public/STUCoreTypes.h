@@ -135,5 +135,24 @@ UENUM()
 enum class ESTULevels: uint8
 {
     MainMenu = 0,
-    TestLevel
+    TestLevel,
+    Level2,
+    Level3
 };
+
+USTRUCT(BlueprintType)
+struct FLevelData
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Game")
+    ESTULevels Level = ESTULevels::MainMenu;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Game")
+    FName LevelDisplayName = NAME_None;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Game")
+    UTexture2D* LevelThumb;
+};
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnLevelSelectedSignature, const FLevelData&);

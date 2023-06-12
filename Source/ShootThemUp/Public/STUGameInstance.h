@@ -13,9 +13,21 @@ class SHOOTTHEMUP_API USTUGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 public:
+    FLevelData GetCurrentLevel() const;
+    void SetCurrentLevel(const FLevelData& Level);
+    
     FName GetLevelName(ESTULevels Level) const;
+
+    TArray<FLevelData> GetLevelsData() const;
+
   
 protected:
     UPROPERTY(EditDefaultsOnly, Category="Game")
+    TArray<FLevelData> LevelsData;
+    
+    UPROPERTY(EditDefaultsOnly, Category="Game")
     TMap<ESTULevels, FName> LevelsName;
+
+private:
+    FLevelData CurrentLevel;
 };

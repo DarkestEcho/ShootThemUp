@@ -9,6 +9,11 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogSTUOpenLevelWidget, All, All);
 
+void USTUOpenLevelWidget::SetLevel(ESTULevels NewLevel)
+{
+    Level = NewLevel;
+}
+
 void USTUOpenLevelWidget::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
@@ -16,10 +21,8 @@ void USTUOpenLevelWidget::NativeOnInitialized()
     if(OpenLevelButton)
     {
         OpenLevelButton->OnClicked.AddDynamic(this, &USTUOpenLevelWidget::OnOpenLevel);
-        UE_LOG(LogSTUOpenLevelWidget, Warning, TEXT("OpenLevelButton add dynamic"));
         return;
     }
-    UE_LOG(LogSTUOpenLevelWidget, Warning, TEXT("OpenLevelButtin is not exist"));
 }
 
 void USTUOpenLevelWidget::OnOpenLevel()
@@ -27,7 +30,6 @@ void USTUOpenLevelWidget::OnOpenLevel()
     const USTUGameInstance* GameInstance = GetWorld()->GetGameInstance<USTUGameInstance>();
     if(!GameInstance)
     {
-        UE_LOG(LogSTUOpenLevelWidget, Error, TEXT("Game instance not found"));
         return;
     }
 

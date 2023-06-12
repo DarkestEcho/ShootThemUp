@@ -14,6 +14,9 @@ class SHOOTTHEMUP_API USTUOpenLevelWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+    void SetLevel(ESTULevels NewLevel);
+    
 protected:
     UPROPERTY(meta=(BindWidget))
     UButton* OpenLevelButton;
