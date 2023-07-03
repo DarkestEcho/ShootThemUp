@@ -14,7 +14,7 @@ class UImage;
 UCLASS()
 class SHOOTTHEMUP_API USTUPlayerStatRowWidget : public UUserWidget
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
     void SetPlayerName(const FText& Text);
@@ -22,7 +22,8 @@ public:
     void SetDeaths(const FText& Text);
     void SetTeam(const FText& Text);
     void SetPlayerIndicatorVisibility(bool bVisible);
-    
+    void SetTeamColor(const FLinearColor& Color);
+
 protected:
     UPROPERTY(meta=(BindWidget))
     UTextBlock* PlayerNameTextBlock;
@@ -35,9 +36,10 @@ protected:
 
     UPROPERTY(meta=(BindWidget))
     UTextBlock* TeamTextBlock;
-    
-    
+
     UPROPERTY(meta=(BindWidget))
     UImage* PlayerIndicatorImage;
-	
+
+    UPROPERTY(meta=(BindWidget))
+    UImage* TeamImage;
 };

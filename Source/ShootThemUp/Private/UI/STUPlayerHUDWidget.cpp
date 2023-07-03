@@ -6,6 +6,8 @@
 #include "STUHealthComponent.h"
 #include "STUWeaponComponent.h"
 #include "STUUtils.h"
+#include "Components/ProgressBar.h"
+#include "Navigation/CrowdFollowingComponent.h"
 
 float USTUPlayerHUDWidget::GetHealthPercent() const
 {
@@ -46,6 +48,32 @@ bool USTUPlayerHUDWidget::IsPlayerSpectating() const
     return PlayerController && PlayerController->GetStateName() == NAME_Spectating;
 }
 
+int32 USTUPlayerHUDWidget::GetKillsNum() const
+{
+    if(const APlayerController* Controller = GetOwningPlayer())
+    {
+        const ASTUPlayerState* PlayerState = Controller->GetPlayerState<ASTUPlayerState>();
+        return PlayerState ? PlayerState->GetKillsNum() : 0;
+    }
+    return 0;
+}
+
+FString USTUPlayerHUDWidget::FormatBullets(int32 BulletsNum) const
+{
+    const int32 MaxLen = 3;
+    const TCHAR PrefixSymbol = '0';
+
+    FString BulletString = FString::FromInt(BulletsNum);
+    const int32 SymbolsNumToAdd = MaxLen - BulletString.Len();
+
+    if(SymbolsNumToAdd > 0)
+    {
+        BulletString = FString::ChrN(SymbolsNumToAdd, PrefixSymbol).Append(BulletString);
+    }
+
+    return BulletString;
+}
+
 void USTUPlayerHUDWidget::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
@@ -63,6 +91,8 @@ void USTUPlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta)
     {
         OnTakeDamage();
     }
+
+    UpdateHealthBar();
 }
 
 void USTUPlayerHUDWidget::OnNewPawn(APawn* NewPawn)
@@ -71,5 +101,15 @@ void USTUPlayerHUDWidget::OnNewPawn(APawn* NewPawn)
     if (HealthComponent && ! HealthComponent->OnHealthChanged.IsBoundToObject(this))
     {
         HealthComponent->OnHealthChanged.AddUObject(this,&USTUPlayerHUDWidget::OnHealthChanged);
+    }
+
+    UpdateHealthBar();
+}
+
+void USTUPlayerHUDWidget::UpdateHealthBar()
+{
+    if(HealthProgressBar)
+    {
+        HealthProgressBar->SetFillColorAndOpacity(GetHealthPercent() > PercentColorThreshold ? GoodColor : BadColor);
     }
 }

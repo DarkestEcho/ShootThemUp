@@ -45,3 +45,13 @@ void USTUPlayerStatRowWidget::SetPlayerIndicatorVisibility(bool bVisible)
         PlayerIndicatorImage->SetVisibility(bVisible ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
     }
 }
+
+void USTUPlayerStatRowWidget::SetTeamColor(const FLinearColor& Color)
+{
+    if(!TeamImage)
+    {
+        return;
+    }
+
+    TeamImage->SetColorAndOpacity(Color);
+}
