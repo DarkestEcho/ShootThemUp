@@ -15,12 +15,12 @@ class SHOOTTHEMUP_API USTUOpenLevelWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+    UPROPERTY(meta=(BindWidget))
+    UButton* OpenLevelButton;
+    
     void SetLevel(ESTULevels NewLevel);
     
 protected:
-    UPROPERTY(meta=(BindWidget))
-    UButton* OpenLevelButton;
-
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Level")
     ESTULevels Level = ESTULevels::MainMenu;
     

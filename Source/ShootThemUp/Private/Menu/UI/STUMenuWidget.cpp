@@ -9,6 +9,7 @@
 #include "Components/Button.h"
 #include "Components/HorizontalBox.h"
 #include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSTUMenuWidget, All, All);
 
@@ -18,12 +19,22 @@ void USTUMenuWidget::NativeOnInitialized()
 
     check(GetWorld());
 
+    if(StartGameButton)
+    {
+        StartGameButton->OpenLevelButton->OnClicked.AddDynamic(this, &USTUMenuWidget::OnStartGame);
+    }
+
     if(QuitGameButton)
     {
         QuitGameButton->OnClicked.AddDynamic(this, &USTUMenuWidget::OnQuitGame);
     }
 
     InitLevelItems();
+}
+
+void USTUMenuWidget::OnStartGame()
+{
+    UGameplayStatics::PlaySound2D(GetWorld(), StartGameSound);
 }
 
 void USTUMenuWidget::OnQuitGame()
