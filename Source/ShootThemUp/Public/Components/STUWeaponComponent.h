@@ -25,6 +25,7 @@ public:
     bool GetWeaponUIData(FWeaponUIData& UIData) const;
     bool GetWeaponAmmoData(FAmmoData& AmmoData) const;
     bool IsNeedAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType) const;
+    bool IsFiring() const;
 
     bool TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount);
 

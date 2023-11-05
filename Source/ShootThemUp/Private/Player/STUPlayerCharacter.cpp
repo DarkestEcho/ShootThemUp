@@ -63,7 +63,7 @@ void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUPlayerCharacter::Jump);
     PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUPlayerCharacter::StartRunning);
     PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUPlayerCharacter::StopRunning);
-    PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTUWeaponComponent::StartFire);
+    PlayerInputComponent->BindAction("Fire", IE_Pressed, this,  &ASTUPlayerCharacter::OnStartFire);
     PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTUWeaponComponent::StopFire);
     PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &USTUWeaponComponent::NextWeapon);
     PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &USTUWeaponComponent::Reload);
@@ -84,6 +84,11 @@ void ASTUPlayerCharacter::MoveForward(float Amount)
     }
 
     AddMovementInput(GetActorForwardVector(), Amount);
+
+    if (IsRunning() && WeaponComponent->IsFiring())
+    {
+        WeaponComponent->StopFire();
+    }
 }
 
 void ASTUPlayerCharacter::MoveRight(float Amount)
@@ -99,6 +104,10 @@ void ASTUPlayerCharacter::MoveRight(float Amount)
 void ASTUPlayerCharacter::StartRunning()
 {
     bRunning = true;
+    if(IsRunning())
+    {
+        WeaponComponent->StopFire();
+    }
 }
 
 void ASTUPlayerCharacter::StopRunning()
@@ -116,6 +125,16 @@ void ASTUPlayerCharacter::OnCameraCollisionEndOverlap(UPrimitiveComponent* Overl
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
     CheckCameraOverlap();
+}
+
+void ASTUPlayerCharacter::OnStartFire()
+{
+    if( IsRunning())
+    {
+        return;
+    }
+
+    WeaponComponent->StartFire();
 }
 
 void ASTUPlayerCharacter::CheckCameraOverlap() const

@@ -8,6 +8,8 @@
 #include "STUBaseWeapon.generated.h"
 
 class UNiagaraComponent;
+class USoundCue;
+
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseWeapon : public AActor
 {
@@ -26,6 +28,7 @@ public:
     bool CanReload() const;
     bool IsAmmoEmpty() const;
     bool IsAmmoFull() const;
+    bool IsFiring() const;
 
     FWeaponUIData GetUIData() const;
     FAmmoData GetAmmoData() const;
@@ -52,6 +55,12 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="VFX")
     UNiagaraSystem* MuzzleFX;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Sound")
+    USoundCue* FireSound;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Sound")
+    USoundCue* NoAmmoSound;
     
     virtual void BeginPlay() override;
 
@@ -74,5 +83,6 @@ protected:
     UNiagaraComponent* SpawnMuzzleFX() const;
     
 private:
+    bool bFireInProgress;
     FAmmoData CurrentAmmo;
 };

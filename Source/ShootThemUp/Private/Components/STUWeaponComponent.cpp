@@ -80,6 +80,11 @@ bool USTUWeaponComponent::IsNeedAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType) con
     return false;
 }
 
+bool USTUWeaponComponent::IsFiring() const
+{
+    return CurrentWeapon && CurrentWeapon->IsFiring();
+}
+
 bool USTUWeaponComponent::TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount)
 {
     for(ASTUBaseWeapon* Weapon : Weapons)

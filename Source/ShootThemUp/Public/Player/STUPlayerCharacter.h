@@ -51,5 +51,8 @@ private:
     UFUNCTION()
     void OnCameraCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+    UFUNCTION()
+    void OnStartFire();
+    
     void CheckCameraOverlap() const;
 };

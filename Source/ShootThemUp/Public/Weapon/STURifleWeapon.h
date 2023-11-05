@@ -9,9 +9,8 @@
 class USTUWeaponFXComponent;
 class UNiagaraComponent;
 class UNiagaraSystem;
-/**
- * 
- */
+class UAudioComponent;
+
 UCLASS()
 class SHOOTTHEMUP_API ASTURifleWeapon : public ASTUBaseWeapon
 {
@@ -50,11 +49,15 @@ private:
 
     UPROPERTY()
     UNiagaraComponent* MuzzleFXComponent;
+
+    UPROPERTY()
+    UAudioComponent* FireAudioComponent;
+    
     
     void MakeDamage(const FHitResult& HitResult);
 
-    void InitMuzzleFX();
-    void SetMuzzleFXVisibility(bool bVisible) const;
+    void InitFX();
+    void SetFXActive(const bool bActive) const;
     void SpawnTraceFX(const FVector& TraceStart, const FVector& TraceEnd);
     AController* GetController() const;
 };

@@ -7,6 +7,9 @@
 #include "Engine/DamageEvents.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogRifleWeapon, All, All);
 
@@ -17,15 +20,19 @@ ASTURifleWeapon::ASTURifleWeapon()
 
 void ASTURifleWeapon::StartFire()
 {
-    InitMuzzleFX();
+    Super::StartFire();
+    
+    InitFX();
     GetWorld()->GetTimerManager().SetTimer(ShotTimerHandle, this, &ASTURifleWeapon::MakeShot, TimeBetweenShots, true);
     MakeShot();
 }
 
 void ASTURifleWeapon::StopFire()
 {
+    Super::StopFire();
+    
     GetWorld()->GetTimerManager().ClearTimer(ShotTimerHandle);
-    SetMuzzleFXVisibility(false);
+    SetFXActive(false);
 }
 
 void ASTURifleWeapon::BeginPlay()
@@ -44,6 +51,7 @@ void ASTURifleWeapon::MakeShot()
         {
             OnClipEmpty.Broadcast(this);
         }
+        UGameplayStatics::PlaySoundAtLocation(GetWorld(), NoAmmoSound, GetActorLocation());
         return;
     }
 
@@ -104,21 +112,31 @@ void ASTURifleWeapon::MakeDamage(const FHitResult& HitResult)
     DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetController(), this);
 }
 
-void ASTURifleWeapon::InitMuzzleFX()
+void ASTURifleWeapon::InitFX()
 {
     if (!MuzzleFXComponent)
     {
         MuzzleFXComponent = SpawnMuzzleFX();
     }
-    SetMuzzleFXVisibility(true);
+
+    if (!FireAudioComponent)
+    {
+        FireAudioComponent = UGameplayStatics::SpawnSoundAttached(FireSound, WeaponMesh, MuzzleSocketName);
+    }
+    SetFXActive(true);
 }
 
-void ASTURifleWeapon::SetMuzzleFXVisibility(const bool bVisible) const
+void ASTURifleWeapon::SetFXActive(const bool bActive) const
 {
     if (MuzzleFXComponent)
     {
-        MuzzleFXComponent->SetPaused(!bVisible);
-        MuzzleFXComponent->SetVisibility(bVisible);
+        MuzzleFXComponent->SetPaused(!bActive);
+        MuzzleFXComponent->SetVisibility(bActive);
+    }
+
+    if (FireAudioComponent)
+    {
+        FireAudioComponent->SetPaused(!bActive);
     }
 }
 

@@ -3,9 +3,12 @@
 
 #include "Weapon/STULauncherWeapon.h"
 #include "STUProjectile.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 void ASTULauncherWeapon::StartFire()
 {
+    Super::StartFire();
     MakeShot();
 }
 
@@ -17,9 +20,12 @@ void ASTULauncherWeapon::MakeShot()
         {
             OnClipEmpty.Broadcast(this);
         }
+
+        // use this function instead of PlaySoundAtLocation just for a difference
+        UGameplayStatics::SpawnSoundAtLocation(GetWorld(), NoAmmoSound, GetActorLocation());
         return;
     }
-    
+
     FVector TraceStart;
     FVector TraceEnd;
 
@@ -27,7 +33,7 @@ void ASTULauncherWeapon::MakeShot()
     {
         return;
     }
-    
+
     DecreaseAmmo();
 
     FHitResult HitResult;
@@ -45,6 +51,9 @@ void ASTULauncherWeapon::MakeShot()
         Projectile->FinishSpawning(SpawnTransform);
     }
 
-    // ReSharper disable once CppExpressionWithoutSideEffects
     SpawnMuzzleFX();
+
+    UGameplayStatics::SpawnSoundAttached(FireSound, WeaponMesh, MuzzleSocketName);
+
+    StopFire();
 }

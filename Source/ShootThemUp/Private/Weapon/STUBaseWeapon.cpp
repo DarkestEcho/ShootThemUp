@@ -21,10 +21,12 @@ ASTUBaseWeapon::ASTUBaseWeapon()
 
 void ASTUBaseWeapon::StartFire()
 {
+    bFireInProgress = true;
 }
 
 void ASTUBaseWeapon::StopFire()
 {
+    bFireInProgress = false;
 }
 
 void ASTUBaseWeapon::BeginPlay()
@@ -118,6 +120,11 @@ bool ASTUBaseWeapon::IsAmmoEmpty() const
 bool ASTUBaseWeapon::IsAmmoFull() const
 {
     return CurrentAmmo.Clips == DefaultAmmo.Clips && CurrentAmmo.Bullets == DefaultAmmo.Bullets;
+}
+
+bool ASTUBaseWeapon::IsFiring() const
+{
+    return bFireInProgress;
 }
 
 bool ASTUBaseWeapon::IsClipEmpty() const
