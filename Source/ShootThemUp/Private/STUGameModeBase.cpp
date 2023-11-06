@@ -9,6 +9,7 @@
 #include "STUPlayerState.h"
 #include "STURespawnComponent.h"
 #include "STUUtils.h"
+#include "STUWeaponComponent.h"
 #include "Player/STUBaseCharacter.h"
 #include "Player/STUPlayerController.h"
 
@@ -254,6 +255,18 @@ void ASTUGameModeBase::SetMatchState(ESTUMatchState State)
     OnMatchStateChange.Broadcast(MatchState);
 }
 
+void ASTUGameModeBase::StopAllFire()
+{
+    for (APawn* Pawn : TActorRange<APawn>(GetWorld()))
+    {
+        if (USTUWeaponComponent* WeaponComponent = STUUtils::GetComponentFromActor<USTUWeaponComponent>(Pawn))
+        {
+            WeaponComponent->StopFire();
+            WeaponComponent->Zoom(false);
+        }
+    }
+}
+
 void ASTUGameModeBase::RespawnRequest(AController* Controller)
 {
     ResetOnePlayer(Controller);
@@ -265,6 +278,7 @@ bool ASTUGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDel
 
     if (bPause)
     {
+        StopAllFire();
         SetMatchState(ESTUMatchState::Pause);
     }
 
