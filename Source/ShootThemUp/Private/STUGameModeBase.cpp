@@ -28,7 +28,7 @@ void ASTUGameModeBase::StartPlay()
 
     SpawnBots();
     CreateTeamsInfo();
-    
+
     CurrentRound = 1;
     StartRound();
 
@@ -49,12 +49,12 @@ void ASTUGameModeBase::Killed(const AController* KillerController, AController* 
     ASTUPlayerState* KillerPlayerState = KillerController ? KillerController->GetPlayerState<ASTUPlayerState>() : nullptr;
     ASTUPlayerState* VictimPlayerState = VictimController ? VictimController->GetPlayerState<ASTUPlayerState>() : nullptr;
 
-    if(KillerPlayerState)
+    if (KillerPlayerState)
     {
         KillerPlayerState->AddKill();
     }
 
-    if(VictimPlayerState)
+    if (VictimPlayerState)
     {
         VictimPlayerState->AddDeath();
     }
@@ -97,7 +97,7 @@ void ASTUGameModeBase::StartRound()
 
 void ASTUGameModeBase::GameRoundUpdate()
 {
-    UE_LOG(LogSTUGameModeBase, Display, TEXT("Time: %i / Round: %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum);
+    // UE_LOG(LogSTUGameModeBase, Display, TEXT("Time: %i / Round: %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum);
     if (--RoundCountDown == 0)
     {
         GetWorldTimerManager().ClearTimer(GameRoundTimerHandle);
@@ -117,7 +117,7 @@ void ASTUGameModeBase::GameRoundUpdate()
 
 void ASTUGameModeBase::ResetPlayers()
 {
-    for(FConstControllerIterator It = GetWorld()->GetControllerIterator(); It; ++It)
+    for (FConstControllerIterator It = GetWorld()->GetControllerIterator(); It; ++It)
     {
         ResetOnePlayer(It->Get());
     }
@@ -125,7 +125,7 @@ void ASTUGameModeBase::ResetPlayers()
 
 void ASTUGameModeBase::ResetOnePlayer(AController* Controller)
 {
-    if(Controller && Controller->GetPawn())
+    if (Controller && Controller->GetPawn())
     {
         Controller->GetPawn()->Reset();
     }
@@ -136,16 +136,16 @@ void ASTUGameModeBase::ResetOnePlayer(AController* Controller)
 void ASTUGameModeBase::CreateTeamsInfo()
 {
     int32 TeamID = 1;
-    for(FConstControllerIterator It = GetWorld()->GetControllerIterator(); It; ++It)
+    for (FConstControllerIterator It = GetWorld()->GetControllerIterator(); It; ++It)
     {
         AController* Controller = It->Get();
-        if(!Controller)
+        if (!Controller)
         {
             continue;
         }
 
         ASTUPlayerState* PlayerState = Controller->GetPlayerState<ASTUPlayerState>();
-        if(!PlayerState)
+        if (!PlayerState)
         {
             continue;
         }
@@ -154,33 +154,34 @@ void ASTUGameModeBase::CreateTeamsInfo()
         PlayerState->SetTeamColor(DetermineColorByTeamID(TeamID));
         PlayerState->SetPlayerName(Controller->IsPlayerController() ? "Player" : "Bot");
         SetPlayerColor(Controller);
-        
+
         TeamID = TeamID == 1 ? 2 : 1;
     }
 }
 
 FLinearColor ASTUGameModeBase::DetermineColorByTeamID(int32 TeamID) const
 {
-    if(TeamID - 1 < GameData.TeamColors.Num())
+    if (TeamID - 1 < GameData.TeamColors.Num())
     {
         return GameData.TeamColors[TeamID - 1];
     }
 
-    UE_LOG(LogSTUGameModeBase, Warning, TEXT("No Color For Team ID: %i, Set To Default Color: %s"), TeamID, *GameData.DefaultTeamColor.ToString())
-    
+    UE_LOG(LogSTUGameModeBase, Warning, TEXT("No Color For Team ID: %i, Set To Default Color: %s"), TeamID,
+        *GameData.DefaultTeamColor.ToString())
+
     return GameData.DefaultTeamColor;
 }
 
 void ASTUGameModeBase::SetPlayerColor(AController* Controller)
 {
-    if(!Controller)
+    if (!Controller)
     {
         return;
     }
 
     ASTUBaseCharacter* Character = Cast<ASTUBaseCharacter>(Controller->GetPawn());
 
-    if(!Character)
+    if (!Character)
     {
         return;
     }
@@ -192,16 +193,16 @@ void ASTUGameModeBase::SetPlayerColor(AController* Controller)
 
 void ASTUGameModeBase::LogPlayerInfo() const
 {
-    for(FConstControllerIterator It = GetWorld()->GetControllerIterator(); It; ++It)
+    for (FConstControllerIterator It = GetWorld()->GetControllerIterator(); It; ++It)
     {
         const AController* Controller = It->Get();
-        if(!Controller)
+        if (!Controller)
         {
             continue;
         }
 
         const ASTUPlayerState* PlayerState = Controller->GetPlayerState<ASTUPlayerState>();
-        if(!PlayerState)
+        if (!PlayerState)
         {
             continue;
         }
@@ -214,12 +215,12 @@ void ASTUGameModeBase::StartRespawn(const AController* Controller) const
 {
     const bool bRespawnAvailable = RoundCountDown > GameData.MinRoundTimeForRespawn + GameData.RespawnTime;
 
-    if(!bRespawnAvailable)
+    if (!bRespawnAvailable)
     {
         return;
     }
-    
-    if(USTURespawnComponent* RespawnComponent = STUUtils::GetComponentFromActor<USTURespawnComponent>(Controller))
+
+    if (USTURespawnComponent* RespawnComponent = STUUtils::GetComponentFromActor<USTURespawnComponent>(Controller))
     {
         RespawnComponent->Respawn(GameData.RespawnTime);
     }
@@ -230,9 +231,9 @@ void ASTUGameModeBase::GameOver()
     UE_LOG(LogSTUGameModeBase, Display, TEXT("====== GAME OVER ======"));
     LogPlayerInfo();
 
-    for(APawn* Pawn : TActorRange<APawn>(GetWorld()))
+    for (APawn* Pawn : TActorRange<APawn>(GetWorld()))
     {
-        if(Pawn)
+        if (Pawn)
         {
             Pawn->TurnOff();
             Pawn->DisableInput(nullptr);
@@ -253,7 +254,7 @@ void ASTUGameModeBase::SetMatchState(ESTUMatchState State)
     OnMatchStateChange.Broadcast(MatchState);
 }
 
-void ASTUGameModeBase::RespawnRequest(AController* Controller )
+void ASTUGameModeBase::RespawnRequest(AController* Controller)
 {
     ResetOnePlayer(Controller);
 }
@@ -262,11 +263,11 @@ bool ASTUGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDel
 {
     const bool bPause = Super::SetPause(PC, CanUnpauseDelegate);
 
-    if(bPause)
+    if (bPause)
     {
         SetMatchState(ESTUMatchState::Pause);
     }
-    
+
     return bPause;
 }
 
@@ -274,7 +275,7 @@ bool ASTUGameModeBase::ClearPause()
 {
     const bool bPauseCleared = Super::ClearPause();
 
-    if(bPauseCleared)
+    if (bPauseCleared)
     {
         SetMatchState(ESTUMatchState::InProgress);
     }

@@ -3,6 +3,8 @@
 
 #include "STUGameInstance.h"
 
+#include "STUSoundFuncLib.h"
+
 
 FName USTUGameInstance::GetLevelName(ESTULevels Level) const
 {
@@ -12,6 +14,11 @@ FName USTUGameInstance::GetLevelName(ESTULevels Level) const
 TArray<FLevelData> USTUGameInstance::GetLevelsData() const
 {
     return LevelsData;
+}
+
+void USTUGameInstance::ToggleVolume()
+{
+    USTUSoundFuncLib::ToggleSoundClassVolume(MasterSoundClass);
 }
 
 FLevelData USTUGameInstance::GetCurrentLevel() const

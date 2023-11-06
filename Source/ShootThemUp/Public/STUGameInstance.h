@@ -7,6 +7,8 @@
 #include "Engine/GameInstance.h"
 #include "STUGameInstance.generated.h"
 
+class USoundClass;
+
 UCLASS()
 class SHOOTTHEMUP_API USTUGameInstance : public UGameInstance
 {
@@ -19,8 +21,9 @@ public:
     FName GetLevelName(ESTULevels Level) const;
 
     TArray<FLevelData> GetLevelsData() const;
-
-  
+    
+    void ToggleVolume();
+    
 protected:
     UPROPERTY(EditDefaultsOnly, Category="Game")
     TArray<FLevelData> LevelsData;
@@ -28,6 +31,8 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category="Game")
     TMap<ESTULevels, FName> LevelsName;
 
+    UPROPERTY(EditDefaultsOnly, Category="Sound")
+    USoundClass* MasterSoundClass;
 private:
     FLevelData CurrentLevel;
 };
