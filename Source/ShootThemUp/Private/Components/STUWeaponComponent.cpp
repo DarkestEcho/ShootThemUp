@@ -114,6 +114,7 @@ void USTUWeaponComponent::BeginPlay()
     InitAnimations();
     SpawnWeapons();
     EquipWeapon(CurrentWeaponIndex);
+    StopFire();
 }
 
 void USTUWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
