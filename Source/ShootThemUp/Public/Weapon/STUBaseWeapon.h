@@ -29,6 +29,8 @@ public:
     bool IsAmmoEmpty() const;
     bool IsAmmoFull() const;
     bool IsFiring() const;
+    
+    virtual void Zoom(bool bEnabled);
 
     FWeaponUIData GetUIData() const;
     FAmmoData GetAmmoData() const;

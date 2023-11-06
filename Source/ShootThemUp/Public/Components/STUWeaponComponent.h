@@ -21,6 +21,7 @@ public:
     void StopFire();
     virtual void NextWeapon();
     void Reload();
+    void Zoom(bool bEnabled);
 
     bool GetWeaponUIData(FWeaponUIData& UIData) const;
     bool GetWeaponAmmoData(FAmmoData& AmmoData) const;

@@ -127,6 +127,10 @@ bool ASTUBaseWeapon::IsFiring() const
     return bFireInProgress;
 }
 
+void ASTUBaseWeapon::Zoom(bool bEnabled)
+{
+}
+
 bool ASTUBaseWeapon::IsClipEmpty() const
 {
     return CurrentAmmo.Bullets == 0;

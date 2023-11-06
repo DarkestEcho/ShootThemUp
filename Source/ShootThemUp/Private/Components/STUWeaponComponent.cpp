@@ -48,6 +48,14 @@ void USTUWeaponComponent::Reload()
     ChangeClip();
 }
 
+void USTUWeaponComponent::Zoom(bool bEnabled)
+{
+    if(CurrentWeapon)
+    {
+        CurrentWeapon->Zoom(bEnabled);
+    }
+}
+
 bool USTUWeaponComponent::GetWeaponUIData(FWeaponUIData& UIData) const
 {
     if(CurrentWeapon)
@@ -165,6 +173,7 @@ void USTUWeaponComponent::EquipWeapon(int32 WeaponIndex)
     {
         if (CurrentWeapon)
         {
+            CurrentWeapon->Zoom(false);
             CurrentWeapon->StopFire();
             AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponArmorySocketName);
         }
