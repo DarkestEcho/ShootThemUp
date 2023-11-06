@@ -5,6 +5,7 @@
 
 #include "STUGameModeBase.h"
 #include "GameFramework/Character.h"
+#include "Perception/AISense_Damage.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All);
 
@@ -37,7 +38,7 @@ float USTUHealthComponent::GetHealth() const
 
 bool USTUHealthComponent::TryAddHealth(float HealthAmount)
 {
-    if(IsDead() || IsHealthFull())
+    if (IsDead() || IsHealthFull())
     {
         return false;
     }
@@ -65,7 +66,7 @@ float USTUHealthComponent::GetHealthPercent() const
 void USTUHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy,
     AActor* DamageCauser)
 {
-    
+
 }
 
 void USTUHealthComponent::OnTakePointDamage(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation,
@@ -96,9 +97,9 @@ void USTUHealthComponent::SetHealth(float NewHealth)
 {
     const float NextHealth = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
     const float HealthDelta = NextHealth - Health;
-    
+
     Health = NextHealth;
-    
+
     OnHealthChanged.Broadcast(Health, HealthDelta);
 }
 
@@ -109,11 +110,11 @@ void USTUHealthComponent::PlayCameraShake() const
         return;
     }
 
-    if(const APawn* Player = GetOwner<APawn>())
+    if (const APawn* Player = GetOwner<APawn>())
     {
-        if(const APlayerController* Controller = Player->GetController<APlayerController>())
+        if (const APlayerController* Controller = Player->GetController<APlayerController>())
         {
-            if(Controller->PlayerCameraManager)
+            if (Controller->PlayerCameraManager)
             {
                 Controller->PlayerCameraManager->StartCameraShake(CameraShake);
             }
@@ -127,7 +128,7 @@ void USTUHealthComponent::Killed(const AController* KillerController) const
     AController* VictimController = Player->Controller;
 
     ASTUGameModeBase* GameMode = Cast<ASTUGameModeBase>(GetWorld()->GetAuthGameMode());
-    
+
     GameMode->Killed(KillerController, VictimController);
 }
 
@@ -153,15 +154,31 @@ void USTUHealthComponent::ApplyDamage(float Damage, AController* InstigatedBy)
     }
     //UE_LOG(LogHealthComponent, Display, TEXT("Damage: %.2f from %s to %s"), Damage, DamageCauser ? *DamageCauser->GetName() : *FString("Undefine"), *GetOwner()->GetName());
     PlayCameraShake();
+    ReportDamage(Damage, InstigatedBy);
+}
+
+void USTUHealthComponent::ReportDamage(float Damage, AController* InstigatedBy)
+{
+    if (!InstigatedBy || !InstigatedBy->GetPawn() || !GetOwner())
+    {
+        return;
+    }
+
+    UAISense_Damage::ReportDamageEvent(GetWorld(),   //
+        GetOwner(),                                  //
+        InstigatedBy->GetPawn(),                     //
+        Damage,                                      //
+        InstigatedBy->GetPawn()->GetActorLocation(), //
+        GetOwner()->GetActorLocation());
 }
 
 float USTUHealthComponent::GetPointDamageModifier(AActor* DamagedActor, const FName& BoneName)
 {
-    if(ACharacter* Character = Cast<ACharacter>(DamagedActor))
+    if (ACharacter* Character = Cast<ACharacter>(DamagedActor))
     {
         const UPhysicalMaterial* PhysicalMaterial = Character->GetMesh()->GetBodyInstance(BoneName)->GetSimplePhysicalMaterial();
 
-        if(PhysicalMaterial && DamageModifiers.Contains(PhysicalMaterial))
+        if (PhysicalMaterial && DamageModifiers.Contains(PhysicalMaterial))
         {
             return DamageModifiers[PhysicalMaterial];
         }
